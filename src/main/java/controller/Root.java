@@ -25,4 +25,41 @@ public class Root {
 		mainFrame = new MainFrame(this);
 	}
 
+	
+	public void addNewTerm() {
+		
+	}
+	
+	public void removeTerm() {
+		
+	}
+	
+	public void selectLanguage() {
+		
+	}
+	
+	public void addLanguage() {
+		
+	}
+	
+	public void onTermSelect() {
+		
+	}
+	
+	public void onTermChange() {
+		
+	}
+	
+	public void onDefinitionChange() {
+		
+	}
+	
+	public void selectFile() {
+		
+	}
+	
+	public void openFile() {
+		
+	}
+
 }

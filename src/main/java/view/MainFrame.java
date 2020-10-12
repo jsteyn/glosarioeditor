@@ -22,18 +22,18 @@ public class MainFrame extends JFrame {
 	
 	private Root root;
 	
-	private SelectorPanel selectorPanel;
-	private JButton addButton = new JButton("Add New");
-	private JButton subButton = new JButton("Delete");
+	public SelectorPanel selectorPanel;
+	public JButton addButton = new JButton("Add New");
+	public JButton subButton = new JButton("Delete");
 
-	private JLabel nameFieldLabel = new JLabel("Term:");
-	private JTextField nameField = new JTextField();
-	private AutoCompleteComboBox languageSelect = new AutoCompleteComboBox(new String[] {"None"});
-	private JLabel definitionAreaLabel = new JLabel("Definition:");
-	private JTextArea definitionArea = new JTextArea();
-	private JLabel fileSelectLabel = new JLabel("Select File:");
-	private JTextField fileField = new JTextField();
-	private JButton fileChooseButton = new JButton("Select File");
+	public JLabel nameFieldLabel = new JLabel("Term:");
+	public JTextField nameField = new JTextField();
+	public AutoCompleteComboBox languageSelect = new AutoCompleteComboBox(new String[] {"None"});
+	public JLabel definitionAreaLabel = new JLabel("Definition:");
+	public JTextArea definitionArea = new JTextArea();
+	public JLabel fileSelectLabel = new JLabel("Select File:");
+	public JTextField fileField = new JTextField();
+	public JButton fileChooseButton = new JButton("Select File");
 	
 	public MainFrame(Root root) {
 		super("Glosario Editor");
