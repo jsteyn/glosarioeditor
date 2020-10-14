@@ -570,7 +570,7 @@
     - depth_first
   en:
     term: "breadth first"
-    def:
+    def: >
       To go through a nested data structure such as a [tree](#tree)
       by exploring all of one level,
       then going on to the next level and so on,
@@ -1314,7 +1314,7 @@
     - breadth_first
   en:
     term: "depth first"
-    def:
+    def: >
       To go through a nested data structure such as a [tree](#tree)
       by going as far as possible down one path,
       then as far as possible down the next and so on,
@@ -3538,7 +3538,7 @@
 
 - slug: quantile
   en:
-    term: quantile
+    term: "quantile"
     def: >
       If a set of sorted values are divided into groups of each size, each
       group is called a quantile. For example, if there are five groups,
