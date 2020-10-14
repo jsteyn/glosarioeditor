@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class TermStructure {
@@ -28,6 +29,10 @@ public class TermStructure {
 	public String getDefinition(String language) {
 		return definitions.getOrDefault(language, new DefinitionStructure(language)).definition;
 	}
+	public ArrayList<DefinitionStructure> getDefinitions() {
+		return new ArrayList(definitions.values());
+	}
+	
 	public void setTerm(String language, String term) {
 		definitions.get(language).term = term;
 	}
