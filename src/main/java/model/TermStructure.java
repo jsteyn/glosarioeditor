@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 public class TermStructure {
 	
 	private String name = "";
+	private ArrayList<String> refs = new ArrayList<String>();
 	private LinkedHashMap<String, DefinitionStructure> definitions = new LinkedHashMap<String, DefinitionStructure>();
 	
 	public TermStructure() {
@@ -17,6 +18,13 @@ public class TermStructure {
 	}
 	public String getName() {
 		return name;
+	}
+	
+	public void addRef(String ref) {
+		refs.add(ref);
+	}
+	public ArrayList<String> getRefs() {
+		return refs;
 	}
 	
 	public void addDefinition(String language, String definition) {
@@ -36,10 +44,13 @@ public class TermStructure {
 	public void setTerm(String language, String term) {
 		definitions.get(language).term = term;
 	}
+	public void setAcronym(String language, String acronym) {
+		definitions.get(language).acronym = acronym;
+	}
 	
 	@Override
 	public String toString() {
-		return name + "-" + definitions;
+		return name + "-" + definitions + (refs.size() == 0 ? "" : "-REF:" + refs);
 	}
 
 }

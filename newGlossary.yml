@@ -45,6 +45,8 @@
       die [relatiewe](#relative_error) fout.
 
 - slug: absolute_path
+  ref:
+    - relative_path
   en:
     term: "absolute path"
     def: >
@@ -112,6 +114,7 @@
 - slug: abstract_syntax_tree
   en:
     term: "abstract syntax tree"
+    acronym: AST
     def: >
       A deeply nested data structure, or [tree](#tree),
       that represents the structure of a program.
@@ -262,6 +265,7 @@
 - slug: api
   en:
     term: "Application Programming Interface"
+    acronym: "API"
     def: >
       A set of functions and procedures provided by one software library or web
       service through which another application can communicate with it.  An API
@@ -319,6 +323,8 @@
       See [dictionary](#dictionary).
 
 - slug: asynchronous
+  ref:
+    - synchronous
   en:
     term: "asynchronous"
     def: >
@@ -353,6 +359,8 @@
       code susceptible d'être choisi par l'utilisateur.
 
 - slug: automatic_variable
+  ref:
+    - makefile
   en:
     term: "automatic variable"
     def: >
@@ -382,6 +390,8 @@
       versions précédentes sans difficulté.
 
 - slug: base_r
+  ref:
+    - tidyverse
   en:
     term: "base R"
     def: >
@@ -398,6 +408,10 @@
       See [Bayes' Theorem](bayes_theorem).
 
 - slug: bayes_theorem
+  ref:
+    - bayesian_network
+    - naive_bayes_classifier
+    - prior_distribution
   en:
     term: "Bayes' Theorem"
     def: >
@@ -407,6 +421,10 @@
       P(X|Y) = P(Y|X) * P(X) / P(Y).
 
 - slug: bayesian_network
+  ref:
+    - bayes_theorem
+    - markov_chain
+    - naive_bayes_classifier
   en:
     term: "Bayesian network"
     def: >
@@ -414,6 +432,11 @@
       given problem.
 
 - slug: bias
+  ref:
+    - variance
+    - overfitting
+    - classification
+    - systematic_error
   en:
     term: "bias"
     def: >
@@ -421,6 +444,8 @@
       from the parameter it is supposed to estimate.
 
 - slug: big_data
+  ref:
+    - three_vs
   en:
     term: "big data"
     def: >
@@ -437,12 +462,19 @@
       [bits](#bit).
 
 - slug: binary_expression
+  ref:
+    - nullary_expression
+    - ternary_expression
+    - unary_expression
   en:
     term: "binary expression"
     def: >
       An expression with two arguments or parameters, such as `1 + 2`.
 
 - slug: binomial_distribution
+  ref:
+    - discrete_random_variable
+    - histogram
   en:
     term: "binomial distribution"
     def: >
@@ -453,6 +485,9 @@
       [normal distribution](#normal_distribution).
 
 - slug: bit
+  ref:
+    - binary
+    - boolean
   en:
     term: "bit"
     def: >
@@ -462,6 +497,7 @@
 - slug: blob
   en:
     term: "binary large object"
+    acronym: "BLOB"
     def: >
       Data that is stored in a database without being interpreted in any way,
       such as an audio file. The term is also now used to refer to data
@@ -490,6 +526,10 @@
       Standard text that is included in legal contracts, licenses, and so on.
 
 - slug: boolean
+  ref:
+    - truthy
+    - falsy
+    - binary
   en:
     term: "Boolean"
     def: >
@@ -526,6 +566,8 @@
       could find their way home.
 
 - slug: breadth_first
+  ref:
+    - depth_first
   en:
     term: "breadth first"
     def: >
@@ -559,6 +601,10 @@
       software program, to make it easier to address and fix the bugs.
 
 - slug: build_manager
+  ref:
+    - build_rule
+    - dependency
+    - makefile
   en:
     term: "build manager"
     def: >
@@ -592,6 +638,9 @@
       are stale.
 
 - slug: build_target
+  ref:
+    - makefile
+    - default_target
   en:
     term: "build target"
     def: >
@@ -643,6 +692,9 @@
       a [request](#http_request).
 
 - slug: camel_case
+  ref:
+    - kebab_case
+    - pothole_case
   en:
     term: "camel case"
     def: >
@@ -651,6 +703,9 @@
       capitalized.  Examples include `CalculateSum` and `findPattern`.
 
 - slug: catch_exception
+  ref:
+    - condition
+    - handle_condition
   en:
     term: "catch (an exception)"
     def: >
@@ -742,6 +797,9 @@
       behavior in [child classes](#child_class).
 
 - slug: classification
+  ref:
+    - supervised_learning
+    - clustering
   en:
     term: "classification"
     def: >
@@ -752,6 +810,7 @@
 - slug: cli
   en:
     term: "command-line interface"
+    acronym: "CLI"
     def: >
       A user interface that relies solely on text for commands and output,
       typically running in a [shell](#shell).
@@ -773,6 +832,11 @@
       been preserved after that scope has ended.
 
 - slug: clustering
+  ref:
+    - centroid
+    - classification
+    - supervised_learning
+    - unsupervised_learning
   en:
     term: "clustering"
     def: >
@@ -882,6 +946,8 @@
       machine instructions or [byte code](#byte_code).
 
 - slug: computational_linguistics
+  ref:
+    - nlp
   en:
     term: "computational linguistics"
     def: >
@@ -899,6 +965,8 @@
       of computational notebooks.
 
 - slug: condition
+  ref:
+    - handle_condition
   en:
     term: "condition"
     def: >
@@ -955,6 +1023,8 @@
       as soon as they become available.
 
 - slug: continuous_random_variable
+  ref:
+    - discrete_random_variable
   en:
     term: "continuous random variable"
     def: >
@@ -962,6 +1032,8 @@
       unbounded, such as age or distance.
 
 - slug: copy_on_modify
+  ref:
+    - aliasing
   en:
     term: "copy-on-modify"
     def: >
@@ -1016,8 +1088,12 @@
       da covariância.
 
 - slug: cran
+  ref:
+    - base_r
+    - tidyverse
   en:
     term: "Comprehensive R Archive Network"
+    acronym: "CRAN"
     def: >
       A public repository of R packages.
 
@@ -1029,6 +1105,8 @@
       from two tables.
 
 - slug: cross_validation
+  ref:
+    - machine_learning
   en:
     term: "cross-validation"
     def: >
@@ -1047,6 +1125,7 @@
 - slug: css
   en:
     term: "Cascading Style Sheets"
+    acronym: "CSS"
     def: >
       A way to control the appearance of HTML.  CSS is typically used to specify
       fonts, colors, and layout.
@@ -1059,6 +1138,7 @@
 - slug: csv
   en:
     term: "comma-separated values"
+    acronym: "CSV"
     def: >
       A text format for tabular data in which each record is one row and fields are
       separated by commas. There are many minor variations, particularly around
@@ -1077,6 +1157,9 @@
       programa acontece relativa a esse diretório.
 
 - slug: data_engineer
+  ref:
+    - data_scientist
+    - data_wrangling
   en:
     term: "data engineer"
     def: >
@@ -1085,6 +1168,8 @@
       reports, and archiving results.
 
 - slug: data_engineering
+  ref:
+    - data_science
   en:
     term: "data engineering"
     def: >
@@ -1092,6 +1177,8 @@
       programs to put mailing addresses in a uniform format.
 
 - slug: data_frame
+  ref:
+    - tidy_data
   en:
     term: "data frame"
     def: >
@@ -1141,6 +1228,8 @@
       A colloquial name for small-scale [data engineering](#data_engineering).
 
 - slug: decision_tree
+  ref:
+    - random_forests
   en:
     term: "decision tree"
     def: >
@@ -1221,6 +1310,8 @@
       é chamada de [variável independente](#independent_variable).
 
 - slug: depth_first
+  ref:
+    - breadth_first
   en:
     term: "depth first"
     def: >
@@ -1231,6 +1322,11 @@
       and then trying the next.
 
 - slug: design_pattern
+  ref:
+    - iterator_pattern
+    - singleton_pattern
+    - template_method_pattern
+    - visitor_pattern
   en:
     term: "design pattern"
     def: >
@@ -1255,6 +1351,8 @@
       often implemented using [hash tables](#hash_table).
 
 - slug: dimension_reduction
+  ref:
+    - principal_component_analysis
   en:
     term: "dimension reduction"
     def: >
@@ -1268,6 +1366,8 @@
       FIXME
 
 - slug: discrete_random_variable
+  ref:
+    - continuous_random_variable
   en:
     term: "discrete random variable"
     def: >
@@ -1297,8 +1397,11 @@
       developer documentation.
 
 - slug: doi
+  ref:
+    - orcid
   en:
     term: "Digital Object Identifier"
+    acronym: "DOI"
     def: >
       A unique persistent identifier for a book, paper, report, software
       release, or other digital artefact.
@@ -1306,6 +1409,7 @@
 - slug: dom
   en:
     term: "Document Object Model"
+    acronym: DOM
     def: >
       A standard in-memory representation of [HTML](#html) and [XML](#xml).
       Each [element](#element) is stored as a [node](#node) in a [tree](#tree)
@@ -1314,6 +1418,8 @@
       libraries for searching and modifying the DOM.
 
 - slug: dom_selector
+  ref:
+    - regular_expression
   en:
     term: "DOM selector"
     def: >
@@ -1337,6 +1443,8 @@
       value with a fractional part and an exponent.
 
 - slug: double_square_brackets
+  ref:
+    - single_square_brackets
   en:
     term: "double square brackets"
     def: >
@@ -1344,6 +1452,8 @@
       underlying type.
 
 - slug: down_vote
+  ref:
+    - up_vote
   en:
     term: "down-vote"
     def: >
@@ -1384,6 +1494,8 @@
       have data associated with it, such as a name or distance.
 
 - slug: element
+  ref:
+    - empty_element
   en:
     term: "element"
     def: >
@@ -1473,6 +1585,8 @@
       or retrying the operation that failed.
 
 - slug: expected_result
+  ref:
+    - actual_result
   en:
     term: "expected result (of test)"
     def: >
@@ -1496,6 +1610,8 @@
       export things explicitly in order to manage [name collision](#name_collision).
 
 - slug: fail_test
+  ref:
+    - pass_test
   en:
     term: "fail (a test)"
     def: >
@@ -1503,6 +1619,9 @@
       [expected result](#expected_result).
 
 - slug: "false"
+  ref:
+    - truthy
+    - falsy
   en:
     term: "false"
     def: >
@@ -1511,6 +1630,8 @@
        something.
 
 - slug: falsy
+  ref:
+    - truthy
   en:
     term: "falsy"
     def: >
@@ -1519,11 +1640,14 @@
 - slug: faq
   en:
     term: "Frequently Asked Questions"
+    acronym: "FAQ"
     def: >
       A curated list of questions commonly asked about a subject, along with
       answers.
 
 - slug: feature_branch
+  ref:
+    - master_branch
   en:
     term: "feature branch"
     def: >
@@ -1618,6 +1742,8 @@
       Another term for a [directory](#directory).
 
 - slug: for_loop
+  ref:
+    - while_loop
   en:
     term: "for loop"
     def: >
@@ -1626,6 +1752,8 @@
       such as each number in a range or each element of a list.
 
 - slug: fork
+  ref:
+    - branch
   en:
     term: "fork"
     def: >
@@ -1642,6 +1770,9 @@
       [hexadecimal](#hexadecimal) character string.
 
 - slug: full_join
+  ref:
+    - left_join
+    - right_join
   en:
     term: "full join"
     def: >
@@ -1658,6 +1789,9 @@
       An unambiguous name of the form `package::thing`.
 
 - slug: functional_programming
+  ref:
+    - higher_order_function
+    - oop
   en:
     term: "functional programming"
     def: >
@@ -1666,6 +1800,8 @@
       loops.
 
 - slug: generator_function
+  ref:
+    - iterator_pattern
   en:
     term: "generator function"
     def: >
@@ -1711,6 +1847,10 @@
       Uma ferramenta de controle de versão para registrar e gerenciar mudanças em um projeto.
 
 - slug: git_branch
+  ref:
+    - feature_branch
+    - fork
+    - master_branch
   en:
     term: "Git branch"
     def: >
@@ -1747,6 +1887,8 @@
       different branches that are now being [merged](#git_merge).
 
 - slug: git_fork
+  ref:
+    - git_clone
   en:
     term: "Git fork"
     def: >
@@ -1822,6 +1964,8 @@
       example, celles écrites directement dans l'intérpreteur.
 
 - slug: global_installation
+  ref:
+    - local_installation
   en:
     term: "global installation"
     def: >
@@ -1834,6 +1978,8 @@
       tous les projets.
 
 - slug: global_variable
+  ref:
+    - local_variable
   en:
     term: "global variable"
     def: >
@@ -1859,16 +2005,22 @@
       files whose names end in `.dat`". The name is derived from "global".
 
 - slug: gnu
+  ref:
+    - gpl
   en:
     term: "GNU Operating System"
+    acronym: "GNU"
     def: >
       "GNU" is an operating system that is free software. GNU is a recursive acronym 
       for "GNU is Not Unix!". The GNU operating system consists of GNU packages as well 
       as free software realeased by third parties.
 
 - slug: gpl
+  ref:
+    - gnu
   en:
     term: "GNU Public License"
+    acronym: "GPL"
     def: >
       A [license](#license) that allows people to re-use software as long as
       they distribute the source of their changes.
@@ -1882,6 +2034,8 @@
       in a stepwise fashion.
 
 - slug: gradient_descent
+  ref:
+    - backpropagation
   en:
     term: "gradient descent"
     def: >
@@ -1890,6 +2044,8 @@
       the gradient.
 
 - slug: graph
+  ref:
+    - tree
   en:
     term: "graph"
     def: >
@@ -1906,18 +2062,23 @@
 - slug: gui
   en:
     term: "graphical user interface"
+    acronym: "GUI"
     def: >
       A user interface that relies on windows, menus, pointers, and other
       graphical elements, as opposed to a [command-line interface](#cli)
       or voice-driven interface.
   pt:
     term: "interface gráfica de usuário"
+    acronym: "GUI"
     def: >
       Uma interface de usuário cujo uso depende de janelas, menus, ponteiros e
       outros elementos gráficos, em oposição a uma [interface de linha de comando](#cli)
       ou interface comandada por voz.
 
 - slug: handle_condition
+  ref:
+    - condition
+    - exception
   en:
     term: "handle (condition)"
     def: >
@@ -1948,6 +2109,8 @@
       arbitrary data at the cost of extra memory.
 
 - slug: header_row
+  ref:
+    - csv
   en:
     term: "header row"
     def: >
@@ -1955,6 +2118,8 @@
       tragically, not their data types or units).
 
 - slug: heterogeneous
+  ref:
+    - homogeneous
   en:
     term: "heterogeneous"
     def: >
@@ -2016,8 +2181,11 @@
       homogeneous: its values must all be numeric, logical, etc.
 
 - slug: html
+  ref:
+    - xml
   en:
     term: "HyperText Markup Language"
+    acronym: "HTML"
     def: >
       The standard [markup language](#markup_language) used for web pages.
       HTML is represented in memory using [DOM](#dom).
@@ -2025,6 +2193,7 @@
 - slug: http
   en:
     term: "HyperText Transfer Protocol"
+    acronym: "HTTP"
     def: >
       The standard [protocol](#protocol) for data transfer on the World-Wide
       Web.  HTTP defines the format of [requests](#http_request) and
@@ -2040,6 +2209,8 @@
       the user's preferred language or the length of the data being transferred.
 
 - slug: http_request
+  ref:
+    - http_response
   en:
     term: "HTTP request"
     def: >
@@ -2057,14 +2228,18 @@
       or data.
 
 - slug: ide
+  ref:
+    - repl
   en:
     term: "Integrated Development Environment"
+    acronym: IDE
     def: >
       An application that helps programmers develop software.
       IDEs typically have a built-in editor, a console to execute code immediately,
       and browsers for exploring data structures in memory and files on disk.
   es:
     term: "Entorno de Desarrollo Integrado"
+    acronym: EDI
     def: >
       Una aplicación que ayuda a programadores a desarrollar software. Los EDI usualmente
       tiene un editor incorporado, una consola que ejecuta el código inmediatamente y
@@ -2113,6 +2288,8 @@
       FIXME
 
 - slug: integration_test
+  ref:
+    - unit_test
   en:
     term: "integration test"
     def: >
@@ -2179,6 +2356,8 @@
       other todo item.
 
 - slug: iterator_pattern
+  ref:
+    - visitor_pattern
   en:
     term: "Iterator pattern"
     def: >
@@ -2189,14 +2368,25 @@
       processed using loops.
 
 - slug: join
+  ref:
+    - anti_join
+    - cross_join
+    - full_join
+    - inner_join
+    - left_join
+    - right_join
+    - self_join
   en:
     term: "join"
     def: >
       One of several operations that combine values from two [tables](#table).
 
 - slug: json
+  ref:
+    - yaml
   en:
     term: "JavaScript Object Notation"
+    acronym: "JSON"
     def: >
       A way to represent data by combining basic values like numbers and character
       strings in lists and name/value structures. The acronym stands for
@@ -2204,6 +2394,8 @@
       it is unencumbered by a syntax for comments or ways to define a [schema](#schema).
 
 - slug: k_means_clustering
+  ref:
+    - clustering
   en:
     term: "k-means clustering"
     def: >
@@ -2220,6 +2412,9 @@
       based on their similarity to nearby neighbors.
 
 - slug: kebab_case
+  ref:
+    - camel_case
+    - pothole_case
   en:
     term: "kebab case"
     def: >
@@ -2235,6 +2430,9 @@
       Keys are often used to select specific record and in [joins](#join).
 
 - slug: keyword_arguments
+  ref:
+    - named_argument
+    - variable_arguments
   en:
     term: "keyword arguments"
     def: >
@@ -2261,6 +2459,9 @@
       least until after the point where it is first encountered).
 
 - slug: left_join
+  ref:
+    - full_join
+    - right_join
   en:
     term: "left join"
     def: >
@@ -2330,6 +2531,8 @@
       abranger mútiplas linhas.
 
 - slug: linear_regression
+  ref:
+    - logistic_regression
   en:
     term: "linear regression"
     def: >
@@ -2368,12 +2571,16 @@
       of those in `values`.
 
 - slug: literate_programming
+  ref:
+    - r_markdown
   en:
     term: "literate programming"
     def: >
       A programming paradigm that mixes prose and code.
 
 - slug: local_installation
+  ref:
+    - global_installation
   en:
     term: "local installation"
     def: >
@@ -2381,6 +2588,9 @@
       within that project.
 
 - slug: local_variable
+  ref:
+    - closure
+    - global_variable
   en:
     term: "local variable"
     def: >
@@ -2429,6 +2639,8 @@
       the values that correspond to true values.  Also referred to as [masking](#masking).
 
 - slug: logistic_regression
+  ref:
+    - linear_regression
   en:
     term: "logistic regression"
     def: >
@@ -2495,6 +2707,9 @@
       and is the basis for [R markdown](r_markdown).
 
 - slug: markov_chain
+  ref:
+    - bayesian_network
+    - monte_carlo
   en:
     term: "Markov Chain"
     def: >
@@ -2503,6 +2718,9 @@
       path taken to reach that state.
 
 - slug: markup_language
+  ref:
+    - latex
+    - xml
   en:
     term: "markup language"
     def: >
@@ -2524,6 +2742,8 @@
       FIXME
 
 - slug: master_branch
+  ref:
+    - feature_branch
   en:
     term: "master branch"
     def: >
@@ -2539,6 +2759,9 @@
       in order to maximize the likelihood of obtaining observed data.
 
 - slug: mean
+  ref:
+    - median
+    - mode
   en:
     term: "mean"
     def: >
@@ -2547,12 +2770,17 @@
       [geometric](#geometric_mean) and [harmonic](#harmonic_mean) means.
 
 - slug: mean_absolute_error
+  ref:
+    - mean_squared_error
+    - root_mean_squared_error
   en:
     term: "mean absolute error"
     def: >
       The average error of all predicted values compared with actual values.
 
 - slug: mean_squared_error
+  ref:
+    - root_mean_squared_error
   en:
     term: "mean squared error"
     def: >
@@ -2562,6 +2790,8 @@
       [mean absolute error](#mean_absolute_error).
 
 - slug: median
+  ref:
+    - mode
   en:
     term: "median"
     def: >
@@ -2624,6 +2854,9 @@
       to simulate databases, web services, and other complex systems.
 
 - slug: mode
+  ref:
+    - mean
+    - median
   en:
     term: "mode"
     def: >
@@ -2643,6 +2876,8 @@
       A reusable software package, also often called a [library](#library).
 
 - slug: monte_carlo
+  ref:
+    - markov_chain
   en:
     term: "Monte Carlo method"
     def: >
@@ -2681,6 +2916,8 @@
       [computational linguistics](#computational_linguistics).
 
 - slug: na
+  ref:
+    - "null"
   en:
     term: "NA"
     def: >
@@ -2695,6 +2932,9 @@
       being classified is independent of every other feature.
 
 - slug: name_collision
+  ref:
+    - call_stack
+    - fully_qualified_name
   en:
     term: "name collision"
     def: >
@@ -2703,6 +2943,9 @@
       [namespaces](#namespace) to prevent such collisions.
 
 - slug: named_argument
+  ref:
+    - keyword_arguments
+    - variable_arguments
   en:
     term: "named argument"
     def: >
@@ -2710,6 +2953,8 @@
       function call.
 
 - slug: namespace
+  ref:
+    - name_collision
   en:
     term: "namespace"
     def: >
@@ -2733,6 +2978,10 @@
       desired by negating their indices.
 
 - slug: neural_network
+  ref:
+    - deep_learning
+    - backpropagation
+    - perceptron
   en:
     term: "neural network"
     def: >
@@ -2745,6 +2994,7 @@
 - slug: nlp
   en:
     term: "natural language processing"
+    acronym: NLP
     def: >
       See [computational linguistics](#computational_linguistics).
 
@@ -2775,6 +3025,8 @@
       can be modeled using a normal distribution.
 
 - slug: nosql_database
+  ref:
+    - relational_database
   en:
     term: "NoSQL database"
     def: >
@@ -2789,6 +3041,8 @@
       NA, and neither is the same as an [empty vector](#empty_vector).
 
 - slug: null_hypothesis
+  ref:
+    - p_value
   en:
     term: "null hypothesis"
     def: >
@@ -2803,6 +3057,10 @@
       do que a hipótese nula para que possam ser sustentadas.
 
 - slug: nullary_expression
+  ref:
+    - binary_expression
+    - ternary_expression
+    - unary_expression
   en:
     term: "nullary expression"
     def: >
@@ -2817,6 +3075,8 @@
       capable of are defined by the class's [methods](#method).
 
 - slug: objective_function
+  ref:
+    - gradient_descent
   en:
     term: "objective function"
     def: >
@@ -2840,6 +3100,7 @@
 - slug: oop
   en:
     term: "object-oriented programming"
+    acronym: "OOP"
     def: >
       A style of programming in which functions and data are bound together in
       objects that only interact with each other through well-defined
@@ -2895,6 +3156,8 @@
       can be combined without worrying about unexpected interactions.
 
 - slug: outlier
+  ref:
+    - overfitting
   en:
     term: "outlier"
     def: >
@@ -2903,6 +3166,8 @@
       statistics, or handled or visualized separately.
 
 - slug: overfitting
+  ref:
+    - outlier
   en:
     term: "overfitting"
     def: >
@@ -2956,6 +3221,8 @@
       class (called the [child class](#child_class)) is derived.
 
 - slug: parent_directory
+  ref:
+    - subdirectory
   en:
     term: "parent directory"
     def: >
@@ -2979,6 +3246,8 @@
       that the program can then manipulate.
 
 - slug: pass_test
+  ref:
+    - fail_test
   en:
     term: "pass (a test)"
     def: >
@@ -2992,6 +3261,9 @@
       markers that indicate where each individual change should be applied.
 
 - slug: path
+  ref:
+    - absolute_path
+    - relative_path
   en:
     term: "path (in filesystem)"
     def: >
@@ -3094,6 +3366,9 @@
       FIXME
 
 - slug: pothole_case
+  ref:
+    - camel_case
+    - kebab_case
   en:
     term: "pothole case"
     def: >
@@ -3101,14 +3376,19 @@
       `first_second_third`.
 
 - slug: prerequisite
+  ref:
+    - dependency
   en:
     term: "prerequisite"
     def: >
       Something that a [build target](#build_target) depends on.
 
 - slug: principal_component_analysis
+  ref:
+    - dimension_reduction
   en:
     term: "principal component analysis"
+    acronym: "PCA"
     def: >
       An algorithm that find the axis along which data varies most,
       then the axis that accounts for the largest part of the remaining variation,
@@ -3124,8 +3404,11 @@
       more accurate [posterior_distribution](#posterior_distribution).
 
 - slug: prng
+  ref:
+    - seed
   en:
     term: "pseudo-random number generator"
+    acronym: "PRNG"
     def: >
       A function that can generate [pseudo-random numbers](#pseudo_random_number).
 
@@ -3173,6 +3456,8 @@
       The person responsible for ensuring that a project moves forward.
 
 - slug: prompt
+  ref:
+    - continuation_prompt
   en:
     term: "prompt"
     def: >
@@ -3207,11 +3492,14 @@
 - slug: psf
   en:
     term: "Python Software Foundation"
+    acronym: "PSF"
     def: >
       A non-profit organization that oversees and promotes the development and
       use of [Python](#python).
 
 - slug: pull_indexing
+  ref:
+    - push_indexing
   en:
     term: "pull indexing"
     def: >
@@ -3220,6 +3508,8 @@
       location in the result vector, i.e., `result[i] = source[index[i]]`.
 
 - slug: pull_request
+  ref:
+    - fork
   en:
     term: "pull request"
     def: >
@@ -3229,6 +3519,8 @@
       changes, and potentially merge it.
 
 - slug: push_indexing
+  ref:
+    - pull_indexing
   en:
     term: "push indexing"
     def: >
@@ -3317,6 +3609,8 @@
       [literate programming](#literate_programming).
 
 - slug: raise_exception
+  ref:
+    - throw_exception
   en:
     term: "raise (an exception)"
     def: >
@@ -3414,6 +3708,9 @@
       y son tan poderosas como crípticas.
 
 - slug: reinforcement_learning
+  ref:
+    - supervised_learning
+    - unsupervised_learning
   en:
     term: "reinforcement learning"
     def: >
@@ -3422,6 +3719,9 @@
       it is making progress.
 
 - slug: relational_database
+  ref:
+    - sql
+    - table
   en:
     term: "relational database"
     def: >
@@ -3447,6 +3747,8 @@
       Relative error is usually more useful than [absolute error](#absolute_error).
 
 - slug: relative_path
+  ref:
+    - absolute_path
   en:
     term: "relative path"
     def: >
@@ -3486,14 +3788,20 @@
       in order to share work.
 
 - slug: repl
+  ref:
+    - ide
   en:
     term: "read-eval-print loop"
+    acronym: "REPL"
     def: >
       An interactive program that reads a command typed in by a user,
       executes it, prints the result, and then waits patiently for the next
       command. REPLs are often used to explore new ideas or for debugging.
 
 - slug: repository
+  ref:
+    - git
+    - github
   en:
     term: "repository"
     def: >
@@ -3541,8 +3849,11 @@
       de análise com os mesmos dados para obter os mesmos resultados.
 
 - slug: restructured_text
+  ref:
+    - markdown
   en:
     term: "reStructured Text"
+    acronym: "reST"
     def: >
       A plaintext markup format used primarily in [Python](#python) documentation.
 
@@ -3553,6 +3864,9 @@
       See [commit](#commit).
 
 - slug: right_join
+  ref:
+    - full_join
+    - left_join
   en:
     term: "right join"
     def: >
@@ -3570,8 +3884,11 @@
       directory is written `/` (a bare forward slash).
 
 - slug: root_mean_squared_error
+  ref:
+    - mean_absolute_error
   en:
     term: "root mean squared error"
+    acronym: RMSE
     def: >
       The square root of the [mean squared error](#mean_squared_error).  Like
       the [standard deviation](#standard_deviation), it is in the same units as
@@ -3595,6 +3912,7 @@
 - slug: rse
   en:
     term: "research software engineer"
+    acronym: "RSE"
     def: >
       Someone whose primary responsibility is to build the specialized software
       that other researchers depend on.
@@ -3703,6 +4021,8 @@
       fixed.
 
 - slug: sense_vote
+  ref:
+    - marthas_rules
   en:
     term: "sense vote"
     def: >
@@ -3769,6 +4089,8 @@
       usually unique within a repository's recent history.
 
 - slug: short_option
+  ref:
+    - long_option
   en:
     term: "short option"
     def: >
@@ -3795,6 +4117,8 @@
       "raising an exception".
 
 - slug: single_square_brackets
+  ref:
+    - double_square_brackets
   en:
     term: "single square brackets"
     def: >
@@ -3810,6 +4134,8 @@
       efficient than [multi-threaded](#multi_threaded) execution.
 
 - slug: singleton
+  ref:
+    - singleton_pattern
   en:
     term: "singleton"
     def: >
@@ -3839,6 +4165,8 @@
       See [pothole case](#pothole_case).
 
 - slug: software_distribution
+  ref:
+    - distro
   en:
     term: "software distribution"
     def: >
@@ -3875,6 +4203,7 @@
 - slug: ssh
   en:
     term: "Secure Shell"
+    acronym: "SSH"
     def: >
       A program that allows secure access to remote computers.
 
@@ -3901,6 +4230,8 @@
       A question-and-answer site popular among programmers.
 
 - slug: standard_deviation
+  ref:
+    - 68_95_997_rule
   en:
     term: "standard deviation"
     def: >
@@ -3917,6 +4248,9 @@
       standard normal distribution.
 
 - slug: stderr
+  ref:
+    - stdin
+    - stdout
   en:
     term: "standard error"
     def: >
@@ -3924,6 +4258,9 @@
       used for error messages.
 
 - slug: stdin
+  ref:
+    - stderr
+    - stdout
   en:
     term: "standard input"
     def: >
@@ -3932,6 +4269,9 @@
       [pipe](#pipe_shell).
 
 - slug: stdout
+  ref:
+    - stderr
+    - stdin
   en:
     term: "standard output"
     def: >
@@ -3984,12 +4324,17 @@
       `git commit` is a subcommand of Git.
 
 - slug: subdirectory
+  ref:
+    - parent_directory
   en:
     term: "subdirectory"
     def: >
       A directory that is below another directory.
 
 - slug: supervised_learning
+  ref:
+    - unsupervised_learning
+    - reinforcement_learning
   en:
     term: "supervised learning"
     def: >
@@ -4000,12 +4345,15 @@
 - slug: svm
   en:
     term: "support vector machine"
+    acronym: SVM
     def: >
       A [supervised learning](#supervised_learning) algorithm that seeks to
       divide points in a dataset so that the empty space between the two sets
       is as wide as possible.
 
 - slug: synchronous
+  ref:
+    - asynchronous
   en:
     term: "synchronous"
     def: >
@@ -4019,6 +4367,8 @@
       See [bias](#bias).
 
 - slug: t_distribution
+  ref:
+    - students_t_distribution
   en:
     term: "t-distribution"
     def: >
@@ -4054,6 +4404,7 @@
 - slug: tdd
   en:
     term: "test-driven development"
+    acronym: "TDD"
     def: >
       A programming practice in which tests are written before a new feature is
       added or a bug is fixed in order to clarify the goal.
@@ -4069,6 +4420,10 @@
       way, but implements the steps in different ways.
 
 - slug: ternary_expression
+  ref:
+    - binary_expression
+    - nullary_expression
+    - unary_expression
   en:
     term: "ternary expression"
     def: >
@@ -4130,6 +4485,8 @@
       See [issue tracking system](#issue_tracking_system).
 
 - slug: tidy_data
+  ref:
+    - table
   en:
     term: "tidy data"
     def: >
@@ -4180,6 +4537,8 @@
       tabulares.
 
 - slug: time_series
+  ref:
+    - moving_average
   en:
     term: "time series"
     def: >
@@ -4231,6 +4590,9 @@
       of a [project manager](#project_manager).
 
 - slug: "true"
+  ref:
+    - truthy
+    - falsy
   en:
     term: "true"
     def: >
@@ -4238,6 +4600,8 @@
       Used in logic and programming to represent [binary](#binary) state of something.
 
 - slug: truthy
+  ref:
+    - falsy
   en:
     term: "truthy"
     def: >
@@ -4266,6 +4630,10 @@
       the equivalent floating point number `4.0`.
 
 - slug: unary_expression
+  ref:
+    - binary_expression
+    - nullary_expression
+    - ternary_expression
   en:
     term: "unary expression"
     def: >
@@ -4280,6 +4648,8 @@
       by standards like [UTF-8](#utf_8).
 
 - slug: unit_test
+  ref:
+    - integration_test
   en:
     term: "unit test"
     def: >
@@ -4287,6 +4657,9 @@
       produces [pass](#pass_test), [fail](#fail_test), or [error](#error_test).
 
 - slug: unsupervised_learning
+  ref:
+    - supervised_learning
+    - reinforcement_learning
   en:
     term: "unsupervised learning"
     def: >
@@ -4294,6 +4667,8 @@
       what the groups will be.
 
 - slug: up_vote
+  ref:
+    - down_vote
   en:
     term: "up-vote"
     def: >
@@ -4317,6 +4692,7 @@
 - slug: url
   en:
     term: "Uniform Resource Locator"
+    acronym: "URL"
     def: >
       A unique address on the World-Wide Web. URLs originally identified web
       pages, but may also represent datasets or database queries, particularly
@@ -4331,6 +4707,9 @@
       [ASCII](#ascii) standard.
 
 - slug: variable_arguments
+  ref:
+    - keyword_arguments
+    - named_argument
   en:
     term: "variable arguments"
     def: >
@@ -4349,6 +4728,8 @@
       FIXME
 
 - slug: variable_program
+  ref:
+    - constant
   en:
     term: "variable (program)"
     def: >
@@ -4401,6 +4782,8 @@
       completos, más que elemento por elemento dentro de un bucle.
 
 - slug: version_control_system
+  ref:
+    - git
   en:
     term: "version control system"
     def: >
@@ -4463,6 +4846,8 @@
       operativo diferente sin afectar la computadora subyacente.
 
 - slug: visitor_pattern
+  ref:
+    - iterator_pattern
   en:
     term: "Visitor pattern"
     def: >
@@ -4480,6 +4865,8 @@
       typically [depth-first](#depth_first) or [breadth-first](#breadth_first).
 
 - slug: while_loop
+  ref:
+    - for_loop
   en:
     term: "while loop"
     def: >

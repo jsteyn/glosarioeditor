@@ -3,6 +3,7 @@ package model;
 public class DefinitionStructure {
 	public String language = "";
 	public String term = "";
+	public String acronym = "";
 	public String definition = "";
 	
 	public DefinitionStructure(String language) {
@@ -16,6 +17,6 @@ public class DefinitionStructure {
 	
 	@Override
 	public String toString() {
-		return language + ":" + term;
+		return language + ":" + term + ":" + acronym;
 	}
 }

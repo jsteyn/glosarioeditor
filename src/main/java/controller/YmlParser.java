@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,6 +44,7 @@ public class YmlParser {
 			if (!ymlSection.equals("")) {
 				data.add(parseYml(ymlSection));
 			}
+			fileScanner.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -55,23 +54,36 @@ public class YmlParser {
 	private static TermStructure parseYml(String ymlCode) {
 		TermStructure struct = new TermStructure();
 		struct.setName(ymlCode.substring(8, ymlCode.indexOf('\n')));
+		Matcher refMatcher = findMatch(ymlCode, "  ref:\n");
+		if (refMatcher.find()) {
+			Matcher refIterator = findMatch(ymlCode, "    - ");
+			while (refIterator.find()) {
+				struct.addRef(ymlCode.substring(refIterator.start() + 6, ymlCode.indexOf('\n', refIterator.start())));
+			}
+		}
 		
-		Matcher matcher = findMatch(ymlCode, "(\\s\\s\\w\\w:|\\z)");
-		matcher.find();
+		Matcher languageMatcher = findMatch(ymlCode, "(\\s\\s\\w\\w:|\\z)");
+		languageMatcher.find();
 		
-		int startIndex = matcher.start();
+		int startIndex = languageMatcher.start();
 		int endIndex;
-		while (matcher.find()) {
-			endIndex = matcher.start();
+		while (languageMatcher.find()) {
+			endIndex = languageMatcher.start();
 			String languageSection = ymlCode.substring(startIndex, endIndex);
 			int quoteStart = languageSection.indexOf('"');
 			
 			String language = languageSection.substring(2, 4);
 			String term = languageSection.substring(quoteStart + 1, languageSection.indexOf('"', quoteStart + 1));
 			String definition = "      " + languageSection.substring(languageSection.indexOf("def: >") + 6).trim();
+			String acronym = "";
+			if (languageSection.contains("    acronym: ")) {
+				acronym = languageSection.substring(languageSection.indexOf("    acronym: ") + 13,
+						languageSection.indexOf('\n', languageSection.indexOf("    acronym: ")));
+			}
 			
 			struct.addDefinition(language, definition);
 			struct.setTerm(language, term);
+			struct.setAcronym(language, acronym);
 			
 			startIndex = endIndex;
 		}
@@ -102,9 +114,19 @@ public class YmlParser {
 	
 	private static String parseStructure(TermStructure struct) {
 		String dataSection = "- slug: " + struct.getName();
+		ArrayList<String> refs = struct.getRefs();
+		if (refs.size() != 0) {
+			dataSection += "\n  ref:";
+			for (String ref: refs) {
+				dataSection += "\n    - " + ref;
+			}
+		}
 		for (DefinitionStructure def: struct.getDefinitions()) {
 			dataSection += "\n  " + def.language + ":";
 			dataSection += "\n    term: \"" + def.term + "\"";
+			if (!def.acronym.equals("")) {
+				dataSection += "\n    acronym: " + def.acronym;
+			}
 			dataSection += "\n    def: >\n" + def.definition;
 		}
 		return dataSection;
