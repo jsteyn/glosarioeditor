@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class TermStructure {
-	
+		
 	private String name = "";
 	private ArrayList<String> refs = new ArrayList<String>();
 	private LinkedHashMap<String, DefinitionStructure> definitions = new LinkedHashMap<String, DefinitionStructure>();
