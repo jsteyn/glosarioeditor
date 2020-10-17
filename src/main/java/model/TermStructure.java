@@ -23,6 +23,9 @@ public class TermStructure {
 	public void addRef(String ref) {
 		refs.add(ref);
 	}
+	public void clearRefs() {
+		refs = new ArrayList<String>();
+	}
 	public ArrayList<String> getRefs() {
 		return refs;
 	}
@@ -37,21 +40,24 @@ public class TermStructure {
 	public String getDefinition(String language) {
 		return definitions.getOrDefault(language, new DefinitionStructure(language)).definition;
 	}
+	public void setDefinition(String language, String definition) {
+		definitions.get(language).definition = definition;
+	}
 	public String getTerm(String language) {
 		return definitions.getOrDefault(language, new DefinitionStructure(language)).term;
+	}
+	public void setTerm(String language, String term) {
+		definitions.get(language).term = term;
 	}
 	public String getAcronym(String language) {
 		return definitions.getOrDefault(language, new DefinitionStructure(language)).acronym;
 	}
-	public ArrayList<DefinitionStructure> getDefinitions() {
-		return new ArrayList(definitions.values());
-	}
-	
-	public void setTerm(String language, String term) {
-		definitions.get(language).term = term;
-	}
 	public void setAcronym(String language, String acronym) {
 		definitions.get(language).acronym = acronym;
+	}
+	
+	public ArrayList<DefinitionStructure> getDefinitions() {
+		return new ArrayList(definitions.values());
 	}
 	
 	public ArrayList<String> getLanguages() {

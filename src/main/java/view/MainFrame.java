@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.File;
 
 import javax.swing.JButton;
@@ -143,6 +145,13 @@ public class MainFrame extends JFrame {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
 					System.out.println("SELECTED");
 					root.onLanguageSelect();
+				}
+			}
+		});
+		languageSelect.inputField.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					root.addLanguage();
 				}
 			}
 		});

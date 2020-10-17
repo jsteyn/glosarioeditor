@@ -2,7 +2,6 @@ package controller;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
@@ -38,13 +37,12 @@ public class Root {
 		fc.setFileFilter(ff);
 		mainFrame = new MainFrame(this);
 	}
-
 	
 	public void addNewTerm() {
-		System.out.println("NEW TERM");
+		mainFrame.selectorPanel.selectButton(mainFrame.selectorPanel.addButton(new TermStructure()));
 	}
 	public void removeTerm() {
-		System.out.println("REMOVE TERM");
+		mainFrame.selectorPanel.removeSelected();
 	}
 	public void chooseFile() {
 		int returnVal = fc.showDialog(mainFrame, "Open File");
@@ -60,11 +58,15 @@ public class Root {
 		}
 	}
 	public void saveFile() {
-		System.out.println("FILE SAVE");
+		YmlParser.writeToFile(mainFrame.currentFile, mainFrame.selectorPanel.getStructures());
 	}
 	
 	public void addLanguage() {
-		System.out.println("ADD LANGUAGE");
+		String language = mainFrame.languageSelect.inputField.getText();
+		if (Pattern.compile("^[a-z][a-z]$", Pattern.DOTALL).matcher(language).matches()) {
+			mainFrame.selectorPanel.getSelected().getStruct().addDefinition(language, "");
+			mainFrame.languageSelect.addItem(language);
+		}
 	}
 	
 	public void onIdSelect() {
@@ -72,20 +74,31 @@ public class Root {
 		mainFrame.checkEnabled();
 	}
 	public void onIdChange() {
-		System.out.println("NAME CHANGED");
+		if (mainFrame.selectorPanel.getSelected() != null) {
+			mainFrame.selectorPanel.getSelected().getStruct()
+			.setId(mainFrame.idField.getText());
+			mainFrame.selectorPanel.getSelected().setText(mainFrame.idField.getText());
+		}
 	}
 	public void onLanguageSelect() {
 		mainFrame.checkEnabled();
 		mainFrame.setLanguage();
 	}
 	public void onTermChange() {
-		System.out.println("TERM CHANGED");
+		mainFrame.selectorPanel.getSelected().getStruct()
+		.setTerm((String)mainFrame.languageSelect.getSelectedItem(), mainFrame.termField.getText());
 	}
 	public void onAcronymChange() {
-		System.out.println("ACRONYM CHANGED");
+		mainFrame.selectorPanel.getSelected().getStruct()
+		.setAcronym((String)mainFrame.languageSelect.getSelectedItem(), mainFrame.acronymField.getText());
 	}
 	public void onDefinitionChange() {
-		System.out.println("DEFINITION CHANGED");
+		mainFrame.selectorPanel.getSelected().getStruct()
+		.setDefinition((String)mainFrame.languageSelect.getSelectedItem(), mainFrame.definitionArea.getText());
+	}
+	public void onReferenceChange() {
+		System.out.println("REFERENCE");
+		mainFrame.referencePanel.applyReferences(mainFrame.selectorPanel.getSelected().getStruct());
 	}
 	
 	public void selectFile() {

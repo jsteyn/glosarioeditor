@@ -124,26 +124,28 @@ public class YmlParser {
 			}
 		}
 		for (DefinitionStructure def: struct.getDefinitions()) {
-			dataSection += "\n  " + def.language + ":";
-			dataSection += "\n    term: \"" + def.term + "\"";
-			if (!def.acronym.equals("")) {
-				dataSection += "\n    acronym: " + def.acronym;
-			}
-			dataSection += "\n    def: >";
-			String definition = def.definition.trim().replaceAll("\n", "").replaceAll(" +", " ");
-			int startIndex = 0;
-			int endIndex = 0;
-			int nextIndex;
-			while ((nextIndex = definition.indexOf(" ", endIndex + 1)) != -1) {
-				if (nextIndex - startIndex > 80) {
-					dataSection += "\n      " + definition.substring(startIndex, endIndex);
-					startIndex = endIndex + 1;
-				} else {
-					endIndex = nextIndex;
+			if (!(def.term.equals("") || def.definition.equals(""))) {
+				dataSection += "\n  " + def.language + ":";
+				dataSection += "\n    term: \"" + def.term + "\"";
+				if (!def.acronym.equals("")) {
+					dataSection += "\n    acronym: " + def.acronym;
 				}
-			}
-			if (startIndex < endIndex) {
-				dataSection += "\n      " + definition.substring(startIndex);
+				dataSection += "\n    def: >";
+				String definition = def.definition.trim().replaceAll("\n", "").replaceAll(" +", " ");
+				int startIndex = 0;
+				int endIndex = 0;
+				int nextIndex;
+				while ((nextIndex = definition.indexOf(" ", endIndex + 1)) != -1) {
+					if (nextIndex - startIndex > 80) {
+						dataSection += "\n      " + definition.substring(startIndex, endIndex);
+						startIndex = endIndex + 1;
+					} else {
+						endIndex = nextIndex;
+					}
+				}
+				if (startIndex < endIndex) {
+					dataSection += "\n      " + definition.substring(startIndex);
+				}
 			}
 		}
 		return dataSection;

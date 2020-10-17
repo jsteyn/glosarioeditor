@@ -1,11 +1,10 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -36,26 +35,28 @@ public class SelectorPanel extends JScrollPane {
 		
 		defaultColor = new JButton().getBackground();
 		
-		TermStructure testStruct = new TermStructure();
-		testStruct.setId("TEST!");
-		testStruct.addDefinition("en", "definition");
-		addButton(testStruct);
-		TermStructure testStruct2 = new TermStructure();
-		testStruct2.setId("TEST\"");
-		addButton(testStruct2);
+//		TermStructure testStruct = new TermStructure();
+//		testStruct.setId("TEST!");
+//		testStruct.addDefinition("en", "definition");
+//		addButton(testStruct);
+//		TermStructure testStruct2 = new TermStructure();
+//		testStruct2.setId("TEST\"");
+//		addButton(testStruct2);
 	}
 	
-	public void addButton(TermStructure newStructure) {
+	public StructureButton addButton(TermStructure newStructure) {
 		StructureButton newButton = new StructureButton(this, newStructure);
 		GridBagConstraints newCon = new GridBagConstraints();
 		newCon.gridx = 0;
 		newCon.gridy = selectionButtons.size();
 		newCon.fill = GridBagConstraints.HORIZONTAL;
 		newCon.weightx = 0.2;
-		newCon.weighty = 0;
+		newCon.weighty = 0.01;
 		mainPanel.add(newButton, newCon);
 		newButton.setMargin(new Insets(0, -30, 0, -30));
+		newButton.setPreferredSize(new Dimension(0, 30));
 		selectionButtons.add(newButton);
+		return newButton;
 	}
 	
 	public void clearButtons() {
@@ -71,11 +72,17 @@ public class SelectorPanel extends JScrollPane {
 		selectionButtons.remove(button);
 	}
 	
+	public void removeSelected() {
+		removeButton(selected);
+		selectButton(null);
+	}
+	
 	public void selectButton(StructureButton button) {
 		if (selected != button) {
 			if (selected == null) {
 				disableButton(button);
 				selected = button;
+				setPosition();
 			} else if (button == null) {
 				enableButton(selected);
 				selected = null;
@@ -83,6 +90,7 @@ public class SelectorPanel extends JScrollPane {
 				enableButton(selected);
 				disableButton(button);
 				selected = button;
+				setPosition();
 			}
 		}
 		root.onIdSelect();
@@ -102,6 +110,21 @@ public class SelectorPanel extends JScrollPane {
 	
 	public int getCount() {
 		return selectionButtons.size();
+	}
+	
+	public ArrayList<TermStructure> getStructures() {
+		ArrayList<TermStructure> structs = new ArrayList<TermStructure>();
+		for (StructureButton b: selectionButtons) {
+			structs.add(b.getStruct());
+		}
+		return structs;
+	}
+	
+	public void setPosition() {
+		if (!selected.getBounds().intersects(mainPanel.getVisibleRect())) {
+			getVerticalScrollBar().setValue(getVerticalScrollBar().getMaximum() *
+					selectionButtons.indexOf(selected) / (selectionButtons.size() - 1));
+		}
 	}
 
 }
