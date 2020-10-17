@@ -31,6 +31,10 @@ public class ReferencePanel extends JScrollPane {
 		addField();
 	}
 	
+	public void addField(String text) {
+		addField();
+		referenceFields.get(referenceFields.size() - 2).setText(text);
+	}
 	private void addField() {
 		JTextField newField = new JTextField();
 		GridBagConstraints newCon = new GridBagConstraints();
@@ -46,6 +50,13 @@ public class ReferencePanel extends JScrollPane {
 	private void removeField(int index) {
 		mainPanel.remove(referenceFields.get(index));
 		referenceFields.remove(index);
+	}
+	public void clearFields() {
+		for (JTextField f: referenceFields) {
+			mainPanel.remove(f);
+		}
+		referenceFields = new ArrayList<JTextField>();
+		addField();
 	}
 	
 	public void setEnabled(boolean enabled) {

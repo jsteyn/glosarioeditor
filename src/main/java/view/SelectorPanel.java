@@ -3,6 +3,7 @@ package view;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -36,11 +37,11 @@ public class SelectorPanel extends JScrollPane {
 		defaultColor = new JButton().getBackground();
 		
 		TermStructure testStruct = new TermStructure();
-		testStruct.setName("TEST!");
+		testStruct.setId("TEST!");
 		testStruct.addDefinition("en", "definition");
 		addButton(testStruct);
 		TermStructure testStruct2 = new TermStructure();
-		testStruct2.setName("TEST\"");
+		testStruct2.setId("TEST\"");
 		addButton(testStruct2);
 	}
 	
@@ -53,7 +54,16 @@ public class SelectorPanel extends JScrollPane {
 		newCon.weightx = 0.2;
 		newCon.weighty = 0;
 		mainPanel.add(newButton, newCon);
+		newButton.setMargin(new Insets(0, -30, 0, -30));
 		selectionButtons.add(newButton);
+	}
+	
+	public void clearButtons() {
+		selectButton(null);
+		for (StructureButton button: selectionButtons) {
+			mainPanel.remove(button);
+		}
+		selectionButtons = new ArrayList<StructureButton>();
 	}
 	
 	public void removeButton(StructureButton button) {
@@ -62,13 +72,18 @@ public class SelectorPanel extends JScrollPane {
 	}
 	
 	public void selectButton(StructureButton button) {
-		if (selected == null) {
-			disableButton(button);
-			selected = button;
-		} else if (!button.equals(selected)) {
-			enableButton(selected);
-			disableButton(button);
-			selected = button;
+		if (selected != button) {
+			if (selected == null) {
+				disableButton(button);
+				selected = button;
+			} else if (button == null) {
+				enableButton(selected);
+				selected = null;
+			} else if (!button.equals(selected)) {
+				enableButton(selected);
+				disableButton(button);
+				selected = button;
+			}
 		}
 		root.onIdSelect();
 	}

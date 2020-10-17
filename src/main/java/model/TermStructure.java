@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 
 public class TermStructure {
 		
-	private String name = "";
+	private String id = "";
 	private ArrayList<String> refs = new ArrayList<String>();
 	private LinkedHashMap<String, DefinitionStructure> definitions = new LinkedHashMap<String, DefinitionStructure>();
 	
@@ -13,11 +13,11 @@ public class TermStructure {
 		
 	}
 	
-	public void setName(String name) {
-		this.name = name;
+	public void setId(String id) {
+		this.id = id;
 	}
-	public String getName() {
-		return name;
+	public String getId() {
+		return id;
 	}
 	
 	public void addRef(String ref) {
@@ -37,6 +37,12 @@ public class TermStructure {
 	public String getDefinition(String language) {
 		return definitions.getOrDefault(language, new DefinitionStructure(language)).definition;
 	}
+	public String getTerm(String language) {
+		return definitions.getOrDefault(language, new DefinitionStructure(language)).term;
+	}
+	public String getAcronym(String language) {
+		return definitions.getOrDefault(language, new DefinitionStructure(language)).acronym;
+	}
 	public ArrayList<DefinitionStructure> getDefinitions() {
 		return new ArrayList(definitions.values());
 	}
@@ -48,9 +54,13 @@ public class TermStructure {
 		definitions.get(language).acronym = acronym;
 	}
 	
+	public ArrayList<String> getLanguages() {
+		return new ArrayList<String>(definitions.keySet());
+	}
+	
 	@Override
 	public String toString() {
-		return name + "-" + definitions + (refs.size() == 0 ? "" : "-REF:" + refs);
+		return id + "-" + definitions + (refs.size() == 0 ? "" : "-REF:" + refs);
 	}
 
 }

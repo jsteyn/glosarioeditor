@@ -18,6 +18,7 @@ public class YmlParser {
 		ArrayList<TermStructure> struct = readFile(new File(YmlParser.class.getClassLoader().getResource("glossary.yml").getFile()));
 		System.out.println("Parsed Structure: " + struct);
 		writeToFile("newGlossary.yml", struct);
+		System.out.println("Written");
 	}
 	
 	public static ArrayList<TermStructure> readFile(String filename) {
@@ -53,7 +54,7 @@ public class YmlParser {
 	
 	private static TermStructure parseYml(String ymlCode) {
 		TermStructure struct = new TermStructure();
-		struct.setName(ymlCode.substring(8, ymlCode.indexOf('\n')));
+		struct.setId(ymlCode.substring(8, ymlCode.indexOf('\n')));
 		Matcher refMatcher = findMatch(ymlCode, "  ref:\n");
 		if (refMatcher.find()) {
 			Matcher refIterator = findMatch(ymlCode, "    - ");
@@ -74,7 +75,8 @@ public class YmlParser {
 			
 			String language = languageSection.substring(2, 4);
 			String term = languageSection.substring(quoteStart + 1, languageSection.indexOf('"', quoteStart + 1));
-			String definition = "      " + languageSection.substring(languageSection.indexOf("def: >") + 6).trim();
+			String definition = languageSection.substring(languageSection.indexOf("def: >") + 6).trim()
+					.replaceAll("\n", "").replaceAll(" +", " ");
 			String acronym = "";
 			if (languageSection.contains("    acronym: ")) {
 				acronym = languageSection.substring(languageSection.indexOf("    acronym: ") + 13,
@@ -113,7 +115,7 @@ public class YmlParser {
 	}
 	
 	private static String parseStructure(TermStructure struct) {
-		String dataSection = "- slug: " + struct.getName();
+		String dataSection = "- slug: " + struct.getId();
 		ArrayList<String> refs = struct.getRefs();
 		if (refs.size() != 0) {
 			dataSection += "\n  ref:";
@@ -127,7 +129,22 @@ public class YmlParser {
 			if (!def.acronym.equals("")) {
 				dataSection += "\n    acronym: " + def.acronym;
 			}
-			dataSection += "\n    def: >\n" + def.definition;
+			dataSection += "\n    def: >";
+			String definition = def.definition.trim().replaceAll("\n", "").replaceAll(" +", " ");
+			int startIndex = 0;
+			int endIndex = 0;
+			int nextIndex;
+			while ((nextIndex = definition.indexOf(" ", endIndex + 1)) != -1) {
+				if (nextIndex - startIndex > 80) {
+					dataSection += "\n      " + definition.substring(startIndex, endIndex);
+					startIndex = endIndex + 1;
+				} else {
+					endIndex = nextIndex;
+				}
+			}
+			if (startIndex < endIndex) {
+				dataSection += "\n      " + definition.substring(startIndex);
+			}
 		}
 		return dataSection;
 	}

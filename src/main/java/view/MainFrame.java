@@ -7,6 +7,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.File;
 
 import javax.swing.JButton;
@@ -14,10 +16,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 
 import controller.Root;
+import model.DefinitionStructure;
+import model.TermStructure;
 
 public class MainFrame extends JFrame {
 
@@ -38,12 +45,12 @@ public class MainFrame extends JFrame {
 	public JLabel acronymFieldLabel = new JLabel("Acronym");
 	public JTextField acronymField = new JTextField();
 	public JLabel definitionAreaLabel = new JLabel("Definition:");
-	public JTextArea definitionArea = new JTextArea();
+	public JTextPane definitionArea = new JTextPane();
 	public JButton fileChooseButton = new JButton("Select File:");
-	public JTextField fileField = new JTextField();
+	public JLabel fileLabel = new JLabel("Select a file to edit contents");
 	public JButton fileSaveButton = new JButton("Save");
 	
-	private File currentFile = null;
+	public File currentFile = null;
 	
 	public MainFrame(final Root root) {
 		super("Glosario Editor");
@@ -130,9 +137,13 @@ public class MainFrame extends JFrame {
 		languageSelectCon.weightx = 0.5;
 		languageSelectCon.weighty = 0;
 		add(languageSelect, languageSelectCon);
-		languageSelect.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				root.onLanguageSelect();
+		languageSelect.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				System.out.println(e.getStateChange());
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					System.out.println("SELECTED");
+					root.onLanguageSelect();
+				}
 			}
 		});
 		
@@ -216,6 +227,9 @@ public class MainFrame extends JFrame {
 		definitionAreaCon.insets = new Insets(0, 20, 20, 20);
 		add(definitionArea, definitionAreaCon);
 		definitionArea.setEnabled(false);
+		SimpleAttributeSet attribs = new SimpleAttributeSet();
+		StyleConstants.setAlignment(attribs, StyleConstants.ALIGN_JUSTIFIED);
+		definitionArea.setParagraphAttributes(attribs, true);
 		definitionArea.getDocument().addDocumentListener(new DocumentListener() {
 			public void removeUpdate(DocumentEvent e) {
 				update(e);
@@ -256,15 +270,14 @@ public class MainFrame extends JFrame {
 			}
 		});
 		
-		GridBagConstraints fileFieldCon = new GridBagConstraints();
-		fileFieldCon.gridx = 1;
-		fileFieldCon.gridy = 5;
-		fileFieldCon.gridwidth = 4;
-		fileFieldCon.fill = GridBagConstraints.HORIZONTAL;
-		fileFieldCon.weightx = 4;
-		fileFieldCon.weighty = 0;
-		add(fileField, fileFieldCon);
-		fileField.setEnabled(false);
+		GridBagConstraints fileLabelCon = new GridBagConstraints();
+		fileLabelCon.gridx = 1;
+		fileLabelCon.gridy = 5;
+		fileLabelCon.gridwidth = 4;
+		fileLabelCon.fill = GridBagConstraints.HORIZONTAL;
+		fileLabelCon.weightx = 4;
+		fileLabelCon.weighty = 0;
+		add(fileLabel, fileLabelCon);
 		
 		GridBagConstraints fileSaveButtonCon = new GridBagConstraints();
 		fileSaveButtonCon.gridx = 5;
@@ -329,6 +342,46 @@ public class MainFrame extends JFrame {
 			acronymField.setEnabled(true);
 			definitionArea.setEnabled(true);
 		}
+	}
+	
+	public void setSelection() {
+		if (selectorPanel.getSelected() == null) {
+			idField.setText("");
+			languageSelect.removeAllItems();
+			languageSelect.addItem("None");
+			referencePanel.clearFields();
+		} else {
+			TermStructure struct = selectorPanel.getSelected().getStruct();
+			idField.setText(struct.getId());
+			languageSelect.removeAllItems();
+			languageSelect.addItem("None");
+			System.out.println(languageSelect.getItemCount());
+			for (String lan: struct.getLanguages()) {
+				languageSelect.addItem(lan);
+			}
+			int index = 0;
+			referencePanel.clearFields();
+			for (String ref: struct.getRefs()) {
+				referencePanel.addField(ref);
+			}
+		}
+		setLanguage();
+		repaint();
+	}
+	
+	public void setLanguage() {
+		String language = (String)languageSelect.getSelectedItem();
+		if (language.equals("None")) {
+			termField.setText("");
+			acronymField.setText("");
+			definitionArea.setText("");
+		} else {
+			TermStructure struct = selectorPanel.getSelected().getStruct();
+			termField.setText(struct.getTerm(language));
+			acronymField.setText(struct.getAcronym(language));
+			definitionArea.setText(struct.getDefinition(language));
+		}
+		
 	}
 
 }

@@ -14,7 +14,7 @@ public class StructureButton extends JButton {
 	private TermStructure struct;
 	
 	public StructureButton(SelectorPanel parent, TermStructure struct) {
-		super(struct.getName());
+		super(struct.getId());
 		this.parent = parent;
 		this.struct = struct;
 		addActionListener(new ActionListener() {
