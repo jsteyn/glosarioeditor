@@ -16,6 +16,14 @@
       onder die gemiddelde.
 
 - slug: abandonware
+  en:
+    term: "abandonware"
+    def: >
+      Software that is no longer being maintained.
+  pt:
+    term: "abandonware"
+    def: >
+      Software que não é mais mantido.
   af:
     term: "afgooiware"
     def: >
@@ -673,6 +681,9 @@
       prefers "handling a condition" to "catching an exception".
 
 - slug: causation
+  en:
+    term: "causation"
+    def: >
 
 - slug: cc_0
   en:
@@ -936,8 +947,14 @@
       probability that the actual value falls in that range.
 
 - slug: console
+  en:
+    term: "console"
+    def: >
 
 - slug: constant
+  en:
+    term: "constant"
+    def: >
 
 - slug: constructor
   en:
@@ -1208,6 +1225,9 @@
       situations that aren't ever supposed to occur.
 
 - slug: degrees_of_freedom
+  en:
+    term: "degrees of freedom"
+    def: >
 
 - slug: delegate_pattern
   en:
@@ -1286,6 +1306,9 @@
       dimensions along which it varies most.
 
 - slug: directory
+  en:
+    term: "directory"
+    def: >
 
 - slug: discrete_random_variable
   ref:
@@ -1736,6 +1759,9 @@
       diferente de dados.
 
 - slug: geometric_mean
+  en:
+    term: "geometric mean"
+    def: >
 
 - slug: git
   en:
@@ -1989,6 +2015,9 @@
       prefers "handling a condition" to "catching an exception".
 
 - slug: harmonic_mean
+  en:
+    term: "harmonic mean"
+    def: >
 
 - slug: hash_function
   en:
@@ -2162,6 +2191,9 @@
       assign the result back to `x`.
 
 - slug: independent_variable
+  en:
+    term: "independent variable"
+    def: >
 
 - slug: inner_join
   en:
@@ -2171,6 +2203,9 @@
       [keys](#key) match.
 
 - slug: instance
+  en:
+    term: "instance"
+    def: >
 
 - slug: integration_test
   ref:
@@ -2606,6 +2641,9 @@
       A simple set of rules for making decisions in small groups.
 
 - slug: masking
+  en:
+    term: "masking"
+    def: >
 
 - slug: master_branch
   ref:
@@ -2943,6 +2981,9 @@
       different solutions in an optimization problem.
 
 - slug: observation
+  en:
+    term: "observation"
+    def: >
 
 - slug: off_by_one_error
   en:
@@ -3205,6 +3246,9 @@
       explicitly matched by name.
 
 - slug: posterior_distribution
+  en:
+    term: "posterior distribution"
+    def: >
 
 - slug: pothole_case
   ref:
@@ -3882,6 +3926,9 @@
       variables include `HOME` (the user's home directory) and `PATH` (their [search path](#search_path)).
 
 - slug: shiny
+  en:
+    term: "Shiny"
+    def: >
 
 - slug: short_circuit_test
   en:
@@ -4236,6 +4283,9 @@
       expressions](#conditional_expression) are the only ternary expressions in most languages.
 
 - slug: test_data
+  en:
+    term: "test data"
+    def: >
 
 - slug: test_runner
   en:
@@ -4359,6 +4409,9 @@
       are usually expressed in terms of [relative error](#relative_error).
 
 - slug: training_data
+  en:
+    term: "training data"
+    def: >
 
 - slug: transitive_dependency
   en:
@@ -4513,6 +4566,9 @@
       utilise `...` afin de capturer les arguments "additionnels".
 
 - slug: variable_data
+  en:
+    term: "variable (data)"
+    def: >
 
 - slug: variable_program
   ref:

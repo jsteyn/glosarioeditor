@@ -41,13 +41,13 @@ public class TermStructure {
 		return definitions.getOrDefault(language, new DefinitionStructure(language)).definition;
 	}
 	public void setDefinition(String language, String definition) {
-		definitions.get(language).definition = definition;
+		definitions.getOrDefault(language, new DefinitionStructure(language)).definition = definition;
 	}
 	public String getTerm(String language) {
 		return definitions.getOrDefault(language, new DefinitionStructure(language)).term;
 	}
 	public void setTerm(String language, String term) {
-		definitions.get(language).term = term;
+		definitions.getOrDefault(language, new DefinitionStructure(language)).term = term;
 	}
 	public String getAcronym(String language) {
 		return definitions.getOrDefault(language, new DefinitionStructure(language)).acronym;
