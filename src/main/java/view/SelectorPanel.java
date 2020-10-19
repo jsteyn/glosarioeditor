@@ -121,7 +121,7 @@ public class SelectorPanel extends JScrollPane {
 	}
 	
 	public void setPosition() {
-		if (!selected.getBounds().intersects(mainPanel.getVisibleRect())) {
+		if (!selected.getBounds().intersects(mainPanel.getVisibleRect()) && selectionButtons.size() > 3) {
 			getVerticalScrollBar().setValue(getVerticalScrollBar().getMaximum() *
 					selectionButtons.indexOf(selected) / (selectionButtons.size() - 1));
 		}

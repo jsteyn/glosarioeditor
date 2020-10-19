@@ -2,6 +2,7 @@ package controller;
 
 import java.awt.SplashScreen;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -58,6 +59,9 @@ public class Root {
 				structs = YmlParser.readFile(file);
 			} catch (InvalidYmlSyntaxException e) {
 				JOptionPane.showMessageDialog(mainFrame, e.getMessage());
+				return;
+			} catch (FileNotFoundException e) {
+				JOptionPane.showMessageDialog(mainFrame, file.getAbsolutePath() + " does not exist");
 				return;
 			}
 			mainFrame.selectorPanel.clearButtons();

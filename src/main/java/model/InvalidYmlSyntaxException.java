@@ -29,9 +29,9 @@ public class InvalidYmlSyntaxException extends Exception {
 			case MISSING_LANGUAGE:
 				return "No language found in slug at line in:\n" + block;
 			case MISSING_TERM:
-				return "No term found at line in;\n" + block;
+				return "No term found at line in:\n" + block;
 			case MISSING_DEF:
-				return "No definition found at line in;\n" + block;
+				return "No definition found at line in:\n" + block;
 		}
 		return "";
 	}

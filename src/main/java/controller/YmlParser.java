@@ -5,8 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
-import java.util.function.IntPredicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,20 +33,20 @@ public class YmlParser {
 	
 	public static void main(String[] args) {
 		try {
-			ArrayList<TermStructure> struct = readFile(new File(YmlParser.class.getClassLoader().getResource("glossary.yml").getFile()));
-			System.out.println("Parsed Structure: " + struct);
-			writeToFile("newGlossary.yml", struct);
-			System.out.println("Written");
+			ArrayList<TermStructure> struct = readFile(args[0]);
+			logger.trace(args[0] + " has been validated");
 		} catch (InvalidYmlSyntaxException e) {
-			
+
+		} catch (FileNotFoundException e) {
+
 		}
 	}
 	
-	public static ArrayList<TermStructure> readFile(String filename) throws InvalidYmlSyntaxException {
+	public static ArrayList<TermStructure> readFile(String filename) throws InvalidYmlSyntaxException, FileNotFoundException {
 		return readFile(new File(filename));
 	}
 
-	public static ArrayList<TermStructure> readFile(File file) throws InvalidYmlSyntaxException {
+	public static ArrayList<TermStructure> readFile(File file) throws InvalidYmlSyntaxException, FileNotFoundException {
 		logger.trace("Reading from file: " + file.getAbsolutePath());
 		if (counter != -1) {
 			logger.error("File read already in progress");
@@ -81,6 +81,7 @@ public class YmlParser {
 			fileScanner.close();
 		} catch (FileNotFoundException e) {
 			logger.error(e.getLocalizedMessage());
+			throw e;
 		} catch (InvalidYmlSyntaxException e) {
 			logger.error(e.getMessage());
 			throw e;
