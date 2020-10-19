@@ -6,32 +6,61 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.function.IntPredicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import model.DefinitionStructure;
+import model.InvalidYmlSyntaxException;
 import model.TermStructure;
 
 public class YmlParser {
 	
+	private static Logger logger = LoggerFactory.getLogger(YmlParser.class);
+	
+	private static Pattern languagePattern = Pattern.compile("(\\s\\s\\w\\w:|\\z)", Pattern.DOTALL);
+	private static Pattern refPattern = Pattern.compile("\\s\\sref:\\n", Pattern.DOTALL);
+	private static Pattern refIterPattern = Pattern.compile("\\s\\s\\s\\s-\\s", Pattern.DOTALL);
+	
+	private static Pattern languageCheck = Pattern.compile("\\s\\s\\w\\w:", Pattern.DOTALL);
+	private static Pattern termCheck = Pattern.compile("\\s\\s\\s\\sterm:\\s", Pattern.DOTALL);
+	private static Pattern defCheck = Pattern.compile("\\s\\s\\s\\sdef:\\s>", Pattern.DOTALL);
+	
+	public static int counter = -1;
+	
 	public static void main(String[] args) {
-		ArrayList<TermStructure> struct = readFile(new File(YmlParser.class.getClassLoader().getResource("glossary.yml").getFile()));
-		System.out.println("Parsed Structure: " + struct);
-		writeToFile("newGlossary.yml", struct);
-		System.out.println("Written");
+		try {
+			ArrayList<TermStructure> struct = readFile(new File(YmlParser.class.getClassLoader().getResource("glossary.yml").getFile()));
+			System.out.println("Parsed Structure: " + struct);
+			writeToFile("newGlossary.yml", struct);
+			System.out.println("Written");
+		} catch (InvalidYmlSyntaxException e) {
+			
+		}
 	}
 	
-	public static ArrayList<TermStructure> readFile(String filename) {
+	public static ArrayList<TermStructure> readFile(String filename) throws InvalidYmlSyntaxException {
 		return readFile(new File(filename));
 	}
 
-	public static ArrayList<TermStructure> readFile(File file) {
+	public static ArrayList<TermStructure> readFile(File file) throws InvalidYmlSyntaxException {
+		logger.trace("Reading from file: " + file.getAbsolutePath());
+		if (counter != -1) {
+			logger.error("File read already in progress");
+			return null;
+		}
+		
+		counter = 1;
+		String ymlSection = "";
 		ArrayList<TermStructure> data = new ArrayList<TermStructure>();
 		try {
 			Scanner fileScanner = new Scanner(file);
 			
-			String ymlSection = "";
 			String nextLine;
+			int subCounter = 0;
 			while (fileScanner.hasNext()) {
 				nextLine = fileScanner.nextLine();
 				if (nextLine.length() != 0 && nextLine.charAt(0) == '-') {
@@ -39,39 +68,71 @@ public class YmlParser {
 						data.add(parseYml(ymlSection));
 					}
 					ymlSection = "";
+					counter += subCounter;
+					subCounter = 0;
 				}
 				ymlSection += nextLine + "\n";
+				subCounter++;
 			}
 			if (!ymlSection.equals("")) {
 				data.add(parseYml(ymlSection));
+				counter += subCounter;
 			}
 			fileScanner.close();
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			logger.error(e.getLocalizedMessage());
+		} catch (InvalidYmlSyntaxException e) {
+			logger.error(e.getMessage());
+			throw e;
+		} catch (Exception e) {
+			InvalidYmlSyntaxException error = new InvalidYmlSyntaxException(counter, ymlSection, InvalidYmlSyntaxException.UNKNOWN_ERROR);
+			logger.error(error.getMessage());
+			throw error;
 		}
+		logger.trace("Finished reading from file: " + file.getAbsolutePath());
+		counter = -1;
 		return data;
 	}
 	
-	private static TermStructure parseYml(String ymlCode) {
+	private static TermStructure parseYml(String ymlCode) throws InvalidYmlSyntaxException {
 		TermStructure struct = new TermStructure();
 		struct.setId(ymlCode.substring(8, ymlCode.indexOf('\n')));
-		Matcher refMatcher = findMatch(ymlCode, "  ref:\n");
+		Matcher refMatcher = refPattern.matcher(ymlCode);
 		if (refMatcher.find()) {
-			Matcher refIterator = findMatch(ymlCode, "    - ");
+			Matcher refIterator = refIterPattern.matcher(ymlCode);
 			while (refIterator.find()) {
 				struct.addRef(ymlCode.substring(refIterator.start() + 6, ymlCode.indexOf('\n', refIterator.start())));
 			}
 		}
 		
-		Matcher languageMatcher = findMatch(ymlCode, "(\\s\\s\\w\\w:|\\z)");
+		if (!languageCheck.matcher(ymlCode).find()) {
+			throw new InvalidYmlSyntaxException(counter, ymlCode, InvalidYmlSyntaxException.MISSING_LANGUAGE);
+		}
+		
+		Matcher languageMatcher = languagePattern.matcher(ymlCode);
 		languageMatcher.find();
 		
 		int startIndex = languageMatcher.start();
 		int endIndex;
+		int subCounter = 1;
 		while (languageMatcher.find()) {
 			endIndex = languageMatcher.start();
 			String languageSection = ymlCode.substring(startIndex, endIndex);
+			
+			if (!termCheck.matcher(languageSection).find()) {
+				throw new InvalidYmlSyntaxException(counter + subCounter, languageSection,
+						InvalidYmlSyntaxException.MISSING_TERM);
+			}
+			if (!defCheck.matcher(languageSection).find()) {
+				throw new InvalidYmlSyntaxException(counter + subCounter, languageSection,
+						InvalidYmlSyntaxException.MISSING_DEF);
+			}
+			
 			int quoteStart = languageSection.indexOf('"');
+			if (quoteStart == -1 || languageSection.indexOf('"', quoteStart + 1) == -1) {
+				throw new InvalidYmlSyntaxException(counter + subCounter, languageSection,
+						InvalidYmlSyntaxException.MISSING_QUOTES);
+			}
 			
 			String language = languageSection.substring(2, 4);
 			String term = languageSection.substring(quoteStart + 1, languageSection.indexOf('"', quoteStart + 1));
@@ -86,6 +147,8 @@ public class YmlParser {
 			struct.addDefinition(language, definition);
 			struct.setTerm(language, term);
 			struct.setAcronym(language, acronym);
+			
+			subCounter += languageSection.split("\n").length;
 			
 			startIndex = endIndex;
 		}
@@ -151,8 +214,4 @@ public class YmlParser {
 		return dataSection;
 	}
 	
-	private static Matcher findMatch(String text, String regex) {
-		return Pattern.compile(regex, Pattern.DOTALL).matcher(text);
-	}
-		
 }

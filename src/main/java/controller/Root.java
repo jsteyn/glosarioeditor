@@ -1,12 +1,15 @@
 package controller;
 
+import java.awt.SplashScreen;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
+import model.InvalidYmlSyntaxException;
 import model.TermStructure;
 import view.MainFrame;
 
@@ -50,7 +53,13 @@ public class Root {
 			File file = fc.getSelectedFile();
 			mainFrame.currentFile = file;
 			mainFrame.fileLabel.setText(file.getAbsolutePath());
-			ArrayList<TermStructure> structs = YmlParser.readFile(file);
+			ArrayList<TermStructure> structs;
+			try {
+				structs = YmlParser.readFile(file);
+			} catch (InvalidYmlSyntaxException e) {
+				JOptionPane.showMessageDialog(mainFrame, e.getMessage());
+				return;
+			}
 			mainFrame.selectorPanel.clearButtons();
 			for (TermStructure s: structs) {
 				mainFrame.selectorPanel.addButton(s);
