@@ -62,8 +62,10 @@ public class ReferencePanel extends JScrollPane {
 			}
 			
 			public void update(DocumentEvent e) {
-				checkFields();
-				root.onReferenceChange();
+				if (!root.lockDocumentListeners) {
+					checkFields();
+					root.onReferenceChange();
+				}
 			}
 		});
 		mainPanel.add(newField, newCon);

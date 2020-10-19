@@ -1,14 +1,23 @@
 package controller;
 
 import java.awt.SplashScreen;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import model.InvalidYmlSyntaxException;
 import model.TermStructure;
@@ -18,6 +27,9 @@ public class Root {
 	
 	private static final long serialVersionUID = 1L;
 	
+	public boolean lockDocumentListeners = false;
+	
+	private Logger logger = LoggerFactory.getLogger(getClass());
 	private MainFrame mainFrame;
 	
 	private final JFileChooser fc = new JFileChooser();
@@ -40,6 +52,15 @@ public class Root {
 		fc.addChoosableFileFilter(ff);
 		fc.setFileFilter(ff);
 		mainFrame = new MainFrame(this);
+		
+		File file = new File("system.properties");
+		Properties p = new Properties();
+		try {
+			p.load(new BufferedReader(new FileReader(file)));
+		} catch (IOException e) {
+			logger.error(e.getLocalizedMessage());
+		}
+		chooseFile(new File(p.getProperty("lastFile")));
 	}
 	
 	public void addNewTerm() {
@@ -52,22 +73,34 @@ public class Root {
 		int returnVal = fc.showDialog(mainFrame, "Open File");
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
-			mainFrame.currentFile = file;
-			mainFrame.fileLabel.setText(file.getAbsolutePath());
-			ArrayList<TermStructure> structs;
-			try {
-				structs = YmlParser.readFile(file);
-			} catch (InvalidYmlSyntaxException e) {
-				JOptionPane.showMessageDialog(mainFrame, e.getMessage());
-				return;
-			} catch (FileNotFoundException e) {
-				JOptionPane.showMessageDialog(mainFrame, file.getAbsolutePath() + " does not exist");
-				return;
-			}
-			mainFrame.selectorPanel.clearButtons();
-			for (TermStructure s: structs) {
-				mainFrame.selectorPanel.addButton(s);
-			}
+			chooseFile(file);
+		}
+	}
+	public void chooseFile(File file) {
+		mainFrame.currentFile = file;
+		lockDocumentListeners = true;
+		mainFrame.fileLabel.setText(file.getAbsolutePath());
+		lockDocumentListeners = false;
+		ArrayList<TermStructure> structs;
+		try {
+			structs = YmlParser.readFile(file);
+		} catch (InvalidYmlSyntaxException e) {
+			JOptionPane.showMessageDialog(mainFrame, e.getMessage());
+			return;
+		} catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(mainFrame, file.getAbsolutePath() + " does not exist");
+			return;
+		}
+		mainFrame.selectorPanel.clearButtons();
+		for (TermStructure s: structs) {
+			mainFrame.selectorPanel.addButton(s);
+		}
+		Properties p = new Properties();
+		p.setProperty("lastFile", file.getAbsolutePath());
+		try {
+			p.store(new BufferedWriter(new FileWriter("system.properties")), "");
+		} catch (IOException e) {
+			logger.error(e.getLocalizedMessage());
 		}
 	}
 	public void saveFile() {
@@ -88,9 +121,11 @@ public class Root {
 	}
 	public void onIdChange() {
 		if (mainFrame.selectorPanel.getSelected() != null) {
+			lockDocumentListeners = true;
 			mainFrame.selectorPanel.getSelected().getStruct()
 			.setId(mainFrame.idField.getText());
 			mainFrame.selectorPanel.getSelected().setText(mainFrame.idField.getText());
+			lockDocumentListeners = false;
 		}
 	}
 	public void onLanguageSelect() {
@@ -110,15 +145,7 @@ public class Root {
 		.setDefinition((String)mainFrame.languageSelect.getSelectedItem(), mainFrame.definitionArea.getText());
 	}
 	public void onReferenceChange() {
-		System.out.println("REFERENCE");
 		mainFrame.referencePanel.applyReferences(mainFrame.selectorPanel.getSelected().getStruct());
-	}
-	
-	public void selectFile() {
-		System.out.println("FILE SELECTED");
-	}
-	public void openFile() {
-		System.out.println("FILE OPENED");
 	}
 
 }

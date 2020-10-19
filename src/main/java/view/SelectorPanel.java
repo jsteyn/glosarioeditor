@@ -34,14 +34,6 @@ public class SelectorPanel extends JScrollPane {
 		mainPanel.setBackground(Color.GRAY);
 		
 		defaultColor = new JButton().getBackground();
-		
-//		TermStructure testStruct = new TermStructure();
-//		testStruct.setId("TEST!");
-//		testStruct.addDefinition("en", "definition");
-//		addButton(testStruct);
-//		TermStructure testStruct2 = new TermStructure();
-//		testStruct2.setId("TEST\"");
-//		addButton(testStruct2);
 	}
 	
 	public StructureButton addButton(TermStructure newStructure) {

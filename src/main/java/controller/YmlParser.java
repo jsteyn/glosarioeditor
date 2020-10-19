@@ -212,7 +212,7 @@ public class YmlParser {
 				}
 			}
 		}
-		return dataSection;
+		return dataSection + "\n";
 	}
 	
 }

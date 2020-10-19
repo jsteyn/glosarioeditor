@@ -127,7 +127,9 @@ public class MainFrame extends JFrame {
 			}
 			
 			public void update(DocumentEvent e) {
-				root.onIdChange();
+				if (!root.lockDocumentListeners) {
+					root.onIdChange();
+				}
 			}
 		});
 		
@@ -141,9 +143,7 @@ public class MainFrame extends JFrame {
 		add(languageSelect, languageSelectCon);
 		languageSelect.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
-				System.out.println(e.getStateChange());
 				if (e.getStateChange() == ItemEvent.SELECTED) {
-					System.out.println("SELECTED");
 					root.onLanguageSelect();
 				}
 			}
@@ -183,7 +183,9 @@ public class MainFrame extends JFrame {
 			}
 			
 			public void update(DocumentEvent e) {
-				root.onTermChange();
+				if (!root.lockDocumentListeners) {
+					root.onTermChange();
+				}
 			}
 		});
 		
@@ -214,7 +216,9 @@ public class MainFrame extends JFrame {
 			}
 			
 			public void update(DocumentEvent e) {
-				root.onAcronymChange();
+				if (!root.lockDocumentListeners) {
+					root.onAcronymChange();
+				}
 			}
 		});
 		
@@ -252,7 +256,9 @@ public class MainFrame extends JFrame {
 			}
 			
 			public void update(DocumentEvent e) {
-				root.onDefinitionChange();
+				if (!root.lockDocumentListeners) {
+					root.onDefinitionChange();
+				}
 			}
 		});
 		
@@ -354,6 +360,7 @@ public class MainFrame extends JFrame {
 	}
 	
 	public void setSelection() {
+		root.lockDocumentListeners = true;
 		if (selectorPanel.getSelected() == null) {
 			idField.setText("");
 			languageSelect.removeAllItems();
@@ -364,7 +371,6 @@ public class MainFrame extends JFrame {
 			idField.setText(struct.getId());
 			languageSelect.removeAllItems();
 			languageSelect.addItem("None");
-			System.out.println(languageSelect.getItemCount());
 			for (String lan: struct.getLanguages()) {
 				languageSelect.addItem(lan);
 			}
@@ -375,6 +381,7 @@ public class MainFrame extends JFrame {
 			}
 		}
 		setLanguage();
+		root.lockDocumentListeners = false;
 		repaint();
 	}
 	
