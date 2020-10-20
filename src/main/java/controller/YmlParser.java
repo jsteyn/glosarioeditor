@@ -161,9 +161,13 @@ public class YmlParser {
 	}
 	
 	public static void writeToFile(File file, ArrayList<TermStructure> structures) {
+		logger.trace("Writing to file: " + file.getAbsolutePath());
 		String data = "";
 		for (TermStructure struct: structures) {
-			data += parseStructure(struct) + "\n\n";
+			String newData = parseStructure(struct);
+			if (!newData.equals("")) {
+				data += parseStructure(struct) + "\n\n";
+			}
 		}
 		if (!data.equals("")) {
 			data = data.trim();
@@ -171,11 +175,12 @@ public class YmlParser {
 		try {
 			file.createNewFile();
 			FileWriter fileWriter = new FileWriter(file);
-			fileWriter.write(data);
+			fileWriter.write(data + "\n\n");
 			fileWriter.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		logger.trace("Finished writing to file: " + file.getAbsolutePath());
 	}
 	
 	private static String parseStructure(TermStructure struct) {
@@ -187,6 +192,7 @@ public class YmlParser {
 				dataSection += "\n    - " + ref;
 			}
 		}
+		String check = dataSection.substring(0, dataSection.length());
 		for (DefinitionStructure def: struct.getDefinitions()) {
 			if (!(def.term.equals("") || def.definition.equals(""))) {
 				dataSection += "\n  " + def.language + ":";
@@ -212,7 +218,10 @@ public class YmlParser {
 				}
 			}
 		}
-		return dataSection + "\n";
+		if (dataSection.equals(check)) {
+			return "";
+		}
+		return dataSection;
 	}
 	
 }
