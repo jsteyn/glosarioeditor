@@ -24,6 +24,10 @@
       Omae Wa MOU SHINDEIRU
 
 - slug: YOU_TOO?_WOW!!!
+  en:
+    term: "YEE"
+    def: >
+      How am I supposed to define this?
 
 - slug: HOLY_GUACAMOLE_WERE_ALL_EXAMPLES
   ref:
@@ -43,3 +47,4 @@
     term: "Frank"
     def: >
       The fr stands for Frank
+

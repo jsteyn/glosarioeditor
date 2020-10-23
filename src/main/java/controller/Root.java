@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.regex.Pattern;
@@ -54,13 +55,36 @@ public class Root {
 		mainFrame = new MainFrame(this);
 		
 		File file = new File("system.properties");
-		Properties p = new Properties();
 		try {
-			p.load(new BufferedReader(new FileReader(file)));
+			if (file.createNewFile()) {
+				Properties p = new Properties();
+				p.setProperty("lastFile", "sampleGlossary.yml");
+				p.store(new BufferedWriter(new FileWriter(file)), "");
+				
+				File defaultFile = new File("src/main/resources/sampleGlossaryDefault.yml");
+				File copyFile = new File("sampleGlossary.yml");
+				copyFile.createNewFile();
+				BufferedWriter copyWriter = new BufferedWriter(new FileWriter(copyFile));
+				copyWriter.write(Files.readString(defaultFile.toPath()));
+				copyWriter.close();
+				
+				chooseFile(new File("sampleGlossary.yml"));
+			} else {
+				Properties p = new Properties();
+				try {
+					p.load(new BufferedReader(new FileReader(file)));
+				} catch (IOException e) {
+					logger.error(e.getLocalizedMessage());
+				}
+				chooseFile(new File(p.getProperty("lastFile")));
+			}
 		} catch (IOException e) {
-			logger.error(e.getLocalizedMessage());
+			e.printStackTrace();
 		}
-		chooseFile(new File(p.getProperty("lastFile")));
+	}
+	
+	public void setStructureSelection() {
+		mainFrame.setStructureSelection();
 	}
 	
 	public void addNewTerm() {
@@ -108,10 +132,10 @@ public class Root {
 	}
 	
 	public void addLanguage() {
-		String language = mainFrame.languageSelect.inputField.getText();
+		String language = mainFrame.getStructurePanel().languageSelect.inputField.getText();
 		if (Pattern.compile("^[a-z][a-z]$", Pattern.DOTALL).matcher(language).matches()) {
 			mainFrame.selectorPanel.getSelected().getStruct().addDefinition(language, "");
-			mainFrame.languageSelect.addItem(language);
+			mainFrame.getStructurePanel().languageSelect.addItem(language);
 		}
 	}
 	
@@ -123,29 +147,39 @@ public class Root {
 		if (mainFrame.selectorPanel.getSelected() != null) {
 			lockDocumentListeners = true;
 			mainFrame.selectorPanel.getSelected().getStruct()
-			.setId(mainFrame.idField.getText());
-			mainFrame.selectorPanel.getSelected().setText(mainFrame.idField.getText());
+			.setId(mainFrame.getStructurePanel().idField.getText());
+			mainFrame.selectorPanel.getSelected().setText(mainFrame.getStructurePanel().idField.getText());
 			lockDocumentListeners = false;
 		}
 	}
 	public void onLanguageSelect() {
 		mainFrame.checkEnabled();
-		mainFrame.setLanguage();
+		mainFrame.getStructurePanel().setLanguage(mainFrame.selectorPanel.getSelectedStructure());
 	}
 	public void onTermChange() {
 		mainFrame.selectorPanel.getSelected().getStruct()
-		.setTerm((String)mainFrame.languageSelect.getSelectedItem(), mainFrame.termField.getText());
+		.setTerm((String)mainFrame.getStructurePanel().languageSelect.getSelectedItem(),
+				mainFrame.getStructurePanel().termField.getText());
 	}
 	public void onAcronymChange() {
 		mainFrame.selectorPanel.getSelected().getStruct()
-		.setAcronym((String)mainFrame.languageSelect.getSelectedItem(), mainFrame.acronymField.getText());
+		.setAcronym((String)mainFrame.getStructurePanel().languageSelect.getSelectedItem(),
+				mainFrame.getStructurePanel().acronymField.getText());
 	}
 	public void onDefinitionChange() {
 		mainFrame.selectorPanel.getSelected().getStruct()
-		.setDefinition((String)mainFrame.languageSelect.getSelectedItem(), mainFrame.definitionArea.getText());
+		.setDefinition((String)mainFrame.getStructurePanel().languageSelect.getSelectedItem(),
+				mainFrame.getStructurePanel().definitionArea.getText());
 	}
 	public void onReferenceChange() {
 		mainFrame.referencePanel.applyReferences(mainFrame.selectorPanel.getSelected().getStruct());
+	}
+	
+	public boolean doLeftSelection() {
+		if (mainFrame == null) {
+			return true;
+		}
+		return mainFrame.doLeftSelection();
 	}
 
 }

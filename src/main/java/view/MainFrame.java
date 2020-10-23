@@ -7,25 +7,15 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.io.File;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
+import javax.swing.JRadioButton;
 
 import controller.Root;
-import model.DefinitionStructure;
 import model.TermStructure;
 
 public class MainFrame extends JFrame {
@@ -35,19 +25,17 @@ public class MainFrame extends JFrame {
 	private Root root;
 	
 	public SelectorPanel selectorPanel;
+	public JLabel referencePanelLabel = new JLabel("References:");
 	public ReferencePanel referencePanel;
+	public StructurePanel leftStructure;
+	public StructurePanel rightStructure;
+	public JRadioButton leftRadio = new JRadioButton("LEFT");
+	public JRadioButton rightRadio = new JRadioButton("RIGHT");
+	public ButtonGroup structureButtonGroup = new ButtonGroup();
+	public String selectedStructurePanel;
 	public JButton addButton = new JButton("Add New");
 	public JButton subButton = new JButton("Delete");
 
-	public JLabel idFieldLabel = new JLabel("ID:");
-	public JTextField idField = new JTextField();
-	public AutoCompleteComboBox languageSelect = new AutoCompleteComboBox(new String[] {"None"});
-	public JLabel termFieldLabel = new JLabel("Term:");
-	public JTextField termField = new JTextField();
-	public JLabel acronymFieldLabel = new JLabel("Acronym");
-	public JTextField acronymField = new JTextField();
-	public JLabel definitionAreaLabel = new JLabel("Definition:");
-	public JTextPane definitionArea = new JTextPane();
 	public JButton fileChooseButton = new JButton("Select File:");
 	public JLabel fileLabel = new JLabel("Select a file to edit contents");
 	public JButton fileSaveButton = new JButton("Save");
@@ -67,7 +55,7 @@ public class MainFrame extends JFrame {
 		selectorPanelCon.gridx = 0;
 		selectorPanelCon.gridy = 0;
 		selectorPanelCon.gridwidth = 2;
-		selectorPanelCon.gridheight = 4;
+		selectorPanelCon.gridheight = 2;
 		selectorPanelCon.fill = GridBagConstraints.BOTH;
 		selectorPanelCon.weightx = 0.2;
 		selectorPanelCon.weighty = 10;
@@ -75,7 +63,7 @@ public class MainFrame extends JFrame {
 		
 		GridBagConstraints addButtonCon = new GridBagConstraints();
 		addButtonCon.gridx = 0;
-		addButtonCon.gridy = 4;
+		addButtonCon.gridy = 2;
 		addButtonCon.fill = GridBagConstraints.HORIZONTAL;
 		addButtonCon.weightx = 0.1;
 		addButtonCon.weighty = 0;
@@ -88,7 +76,7 @@ public class MainFrame extends JFrame {
 		
 		GridBagConstraints subButtonCon = new GridBagConstraints();
 		subButtonCon.gridx = 1;
-		subButtonCon.gridy = 4;
+		subButtonCon.gridy = 2;
 		subButtonCon.fill = GridBagConstraints.HORIZONTAL;
 		subButtonCon.weightx = 0.1;
 		subButtonCon.weighty = 0;
@@ -100,173 +88,71 @@ public class MainFrame extends JFrame {
 		});
 		
 		
-		GridBagConstraints nameFieldLabelCon = new GridBagConstraints();
-		nameFieldLabelCon.gridx = 2;
-		nameFieldLabelCon.gridy = 0;
-		nameFieldLabelCon.weightx = 0;
-		nameFieldLabelCon.weighty = 0;
-		add(idFieldLabel, nameFieldLabelCon);
-		
-		GridBagConstraints nameFieldCon = new GridBagConstraints();
-		nameFieldCon.gridx = 3;
-		nameFieldCon.gridy = 0;
-		nameFieldCon.fill = GridBagConstraints.HORIZONTAL;
-		nameFieldCon.weightx = 1;
-		nameFieldCon.weighty = 0;
-		add(idField, nameFieldCon);
-		idField.getDocument().addDocumentListener(new DocumentListener() {
-			public void removeUpdate(DocumentEvent e) {
-				update(e);
+		GridBagConstraints leftRadioCon = new GridBagConstraints();
+		leftRadioCon.gridx = 2;
+		leftRadioCon.gridy = 0;
+		leftRadioCon.weightx = 0;
+		leftRadioCon.weighty = 0;
+		add(leftRadio, leftRadioCon);
+		leftRadio.setActionCommand("LEFT");
+		leftRadio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				root.setStructureSelection();
 			}
-			public void insertUpdate(DocumentEvent e) {
-				update(e);
-			}
-			
-			public void changedUpdate(DocumentEvent e) {
+		});
+		leftRadio.setSelected(true);
 
-			}
-			
-			public void update(DocumentEvent e) {
-				if (!root.lockDocumentListeners) {
-					root.onIdChange();
-				}
-			}
-		});
-		
-		GridBagConstraints languageSelectCon = new GridBagConstraints();
-		languageSelectCon.gridx = 4;
-		languageSelectCon.gridy = 0;
-		languageSelectCon.gridwidth = 2;
-		languageSelectCon.fill = GridBagConstraints.HORIZONTAL;
-		languageSelectCon.weightx = 0.5;
-		languageSelectCon.weighty = 0;
-		add(languageSelect, languageSelectCon);
-		languageSelect.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) {
-					root.onLanguageSelect();
-				}
-			}
-		});
-		languageSelect.inputField.addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					root.addLanguage();
-				}
+		GridBagConstraints rightRadioCon = new GridBagConstraints();
+		rightRadioCon.gridx = 3;
+		rightRadioCon.gridy = 0;
+		rightRadioCon.weightx = 0;
+		rightRadioCon.weighty = 0;
+		add(rightRadio, rightRadioCon);
+		rightRadio.setActionCommand("RIGHT");
+		rightRadio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				root.setStructureSelection();
 			}
 		});
 		
-		GridBagConstraints termFieldLabelCon = new GridBagConstraints();
-		termFieldLabelCon.gridx = 2;
-		termFieldLabelCon.gridy = 1;
-		termFieldLabelCon.weightx = 0.1;
-		termFieldLabelCon.weighty = 0;
-		add(termFieldLabel, termFieldLabelCon);
-		
-		GridBagConstraints termFieldCon = new GridBagConstraints();
-		termFieldCon.gridx = 3;
-		termFieldCon.gridy = 1;
-		termFieldCon.fill = GridBagConstraints.HORIZONTAL;
-		termFieldCon.weightx = 0.1;
-		termFieldCon.weighty = 0;
-		add(termField, termFieldCon);
-		termField.getDocument().addDocumentListener(new DocumentListener() {
-			public void removeUpdate(DocumentEvent e) {
-				update(e);
-			}
-			public void insertUpdate(DocumentEvent e) {
-				update(e);
-			}
-			
-			public void changedUpdate(DocumentEvent e) {
+		structureButtonGroup.add(leftRadio);
+		structureButtonGroup.add(rightRadio);
 
-			}
-			
-			public void update(DocumentEvent e) {
-				if (!root.lockDocumentListeners) {
-					root.onTermChange();
-				}
-			}
-		});
 		
-		GridBagConstraints acronymFieldLabelCon = new GridBagConstraints();
-		acronymFieldLabelCon.gridx = 4;
-		acronymFieldLabelCon.gridy = 1;
-		acronymFieldLabelCon.weightx = 0.1;
-		acronymFieldLabelCon.weighty = 0;
-		add(acronymFieldLabel, acronymFieldLabelCon);
+		leftStructure = new StructurePanel(root);
+		GridBagConstraints leftStructureCon = new GridBagConstraints();
+		leftStructureCon.gridx = 2;
+		leftStructureCon.gridy = 1;
+		leftStructureCon.fill = GridBagConstraints.BOTH;
+		leftStructureCon.weightx = 1;
+		leftStructureCon.weighty = 1;
+		add(leftStructure, leftStructureCon);
+		leftStructure.setBackground(new Color(255, 255, 180));
 		
-		GridBagConstraints acronymFieldCon = new GridBagConstraints();
-		acronymFieldCon.gridx = 5;
-		acronymFieldCon.gridy = 1;
-		acronymFieldCon.fill = GridBagConstraints.HORIZONTAL;
-		acronymFieldCon.weightx = 0.1;
-		acronymFieldCon.weighty = 0;
-		add(acronymField, acronymFieldCon);
-		acronymField.getDocument().addDocumentListener(new DocumentListener() {
-			public void removeUpdate(DocumentEvent e) {
-				update(e);
-			}
-			public void insertUpdate(DocumentEvent e) {
-				update(e);
-			}
-			
-			public void changedUpdate(DocumentEvent e) {
-
-			}
-			
-			public void update(DocumentEvent e) {
-				if (!root.lockDocumentListeners) {
-					root.onAcronymChange();
-				}
-			}
-		});
-		
-		GridBagConstraints definitionAreaLabelCon = new GridBagConstraints();
-		definitionAreaLabelCon.gridx = 2;
-		definitionAreaLabelCon.gridy = 2;
-		definitionAreaLabelCon.weightx = 0;
-		definitionAreaLabelCon.weighty = 0;
-		definitionAreaLabelCon.insets = new Insets(10, 20, 0, 0);
-		add(definitionAreaLabel, definitionAreaLabelCon);
-		
-		GridBagConstraints definitionAreaCon = new GridBagConstraints();
-		definitionAreaCon.gridx = 2;
-		definitionAreaCon.gridy = 3;
-		definitionAreaCon.gridwidth = 3;
-		definitionAreaCon.fill = GridBagConstraints.BOTH;
-		definitionAreaCon.weightx = 1;
-		definitionAreaCon.weighty = 9;
-		definitionAreaCon.insets = new Insets(0, 20, 20, 20);
-		add(definitionArea, definitionAreaCon);
-		definitionArea.setEnabled(false);
-		SimpleAttributeSet attribs = new SimpleAttributeSet();
-		StyleConstants.setAlignment(attribs, StyleConstants.ALIGN_JUSTIFIED);
-		definitionArea.setParagraphAttributes(attribs, true);
-		definitionArea.getDocument().addDocumentListener(new DocumentListener() {
-			public void removeUpdate(DocumentEvent e) {
-				update(e);
-			}
-			public void insertUpdate(DocumentEvent e) {
-				update(e);
-			}
-			
-			public void changedUpdate(DocumentEvent e) {
-
-			}
-			
-			public void update(DocumentEvent e) {
-				if (!root.lockDocumentListeners) {
-					root.onDefinitionChange();
-				}
-			}
-		});
+		rightStructure = new StructurePanel(root);
+		GridBagConstraints rightStructureCon = new GridBagConstraints();
+		rightStructureCon.gridx = 3;
+		rightStructureCon.gridy = 1;
+		rightStructureCon.fill = GridBagConstraints.BOTH;
+		rightStructureCon.weightx = 1;
+		rightStructureCon.weighty = 1;
+		add(rightStructure, rightStructureCon);
+		rightStructure.setBackground(new Color(180, 200, 255));
 		
 
+		GridBagConstraints referencePanelLabelCon = new GridBagConstraints();
+		referencePanelLabelCon.gridx = 4;
+		referencePanelLabelCon.gridy = 0;
+		referencePanelLabelCon.weightx = 0;
+		referencePanelLabelCon.weighty = 0;
+		referencePanelLabelCon.insets = new Insets(10, 20, 0, 0);
+		add(referencePanelLabel, referencePanelLabelCon);
+		
 		referencePanel = new ReferencePanel(root);
 		GridBagConstraints referencePanelCon = new GridBagConstraints();
-		referencePanelCon.gridx = 5;
-		referencePanelCon.gridy = 3;
+		referencePanelCon.gridx = 4;
+		referencePanelCon.gridy = 1;
+		referencePanelCon.gridheight = 2;
 		referencePanelCon.fill = GridBagConstraints.BOTH;
 		referencePanelCon.weightx = 0.2;
 		referencePanelCon.weighty = 10;
@@ -274,7 +160,7 @@ public class MainFrame extends JFrame {
 
 		GridBagConstraints fileChooseButtonCon = new GridBagConstraints();
 		fileChooseButtonCon.gridx = 0;
-		fileChooseButtonCon.gridy = 5;
+		fileChooseButtonCon.gridy = 3;
 		fileChooseButtonCon.fill = GridBagConstraints.HORIZONTAL;
 		fileChooseButtonCon.weightx = 0;
 		fileChooseButtonCon.weighty = 0;
@@ -287,16 +173,16 @@ public class MainFrame extends JFrame {
 		
 		GridBagConstraints fileLabelCon = new GridBagConstraints();
 		fileLabelCon.gridx = 1;
-		fileLabelCon.gridy = 5;
-		fileLabelCon.gridwidth = 4;
+		fileLabelCon.gridy = 3;
+		fileLabelCon.gridwidth = 3;
 		fileLabelCon.fill = GridBagConstraints.HORIZONTAL;
 		fileLabelCon.weightx = 4;
 		fileLabelCon.weighty = 0;
 		add(fileLabel, fileLabelCon);
 		
 		GridBagConstraints fileSaveButtonCon = new GridBagConstraints();
-		fileSaveButtonCon.gridx = 5;
-		fileSaveButtonCon.gridy = 5;
+		fileSaveButtonCon.gridx = 4;
+		fileSaveButtonCon.gridy = 3;
 		fileSaveButtonCon.fill = GridBagConstraints.HORIZONTAL;
 		fileSaveButtonCon.weightx = 1;
 		fileSaveButtonCon.weighty = 0;
@@ -307,9 +193,10 @@ public class MainFrame extends JFrame {
 			}
 		});
 		
+		setStructureSelection();
 		checkEnabled();
 		
-		setPreferredSize(new Dimension(800, 600));
+		setPreferredSize(new Dimension(1200, 600));
 		pack();
 		setVisible(true);
 	}
@@ -337,67 +224,61 @@ public class MainFrame extends JFrame {
 	
 	public void setUnselected() {
 		referencePanel.setEnabled(false);
-		idField.setEnabled(false);
-		languageSelect.setEnabled(false);
-		termField.setEnabled(false);
-		acronymField.setEnabled(false);
-		definitionArea.setEnabled(false);
+		leftStructure.setUnselected();
+		rightStructure.setUnselected();
 	}
 	
 	public void setSelected() {
 		referencePanel.setEnabled(true);
-		idField.setEnabled(true);
-		languageSelect.setEnabled(true);
-		if (languageSelect.getSelectedItem().equals("None")) {
-			termField.setEnabled(false);
-			acronymField.setEnabled(false);
-			definitionArea.setEnabled(false);
+		if (doLeftSelection()) {
+			leftStructure.setSelected();
+			rightStructure.setUnselected();
 		} else {
-			termField.setEnabled(true);
-			acronymField.setEnabled(true);
-			definitionArea.setEnabled(true);
+			leftStructure.setUnselected();
+			rightStructure.setSelected();
 		}
 	}
 	
-	public void setSelection() {
-		root.lockDocumentListeners = true;
-		if (selectorPanel.getSelected() == null) {
-			idField.setText("");
-			languageSelect.removeAllItems();
-			languageSelect.addItem("None");
-			referencePanel.clearFields();
+	public void setStructureSelection() {
+		if (structureButtonGroup.getSelection().getActionCommand().equals(leftRadio.getActionCommand())) {
+			selectedStructurePanel = leftRadio.getActionCommand();
 		} else {
-			TermStructure struct = selectorPanel.getSelected().getStruct();
-			idField.setText(struct.getId());
-			languageSelect.removeAllItems();
-			languageSelect.addItem("None");
-			for (String lan: struct.getLanguages()) {
-				languageSelect.addItem(lan);
-			}
-			int index = 0;
+			selectedStructurePanel = rightRadio.getActionCommand();
+		}
+		checkEnabled();
+		updateReferences(selectorPanel.getSelectedStructure());
+	}
+	
+	public void setSelection() {
+		TermStructure struct = selectorPanel.getSelectedStructure();
+		getStructurePanel().setSelection(struct);
+		updateReferences(struct);
+	}
+	
+	public void updateReferences(TermStructure struct) {
+		root.lockDocumentListeners = true;
+
+		referencePanel.clearFields();
+		if (struct != null) {
 			referencePanel.clearFields();
 			for (String ref: struct.getRefs()) {
 				referencePanel.addField(ref);
 			}
 		}
-		setLanguage();
 		root.lockDocumentListeners = false;
 		repaint();
 	}
 	
-	public void setLanguage() {
-		String language = (String)languageSelect.getSelectedItem();
-		if (language.equals("None")) {
-			termField.setText("");
-			acronymField.setText("");
-			definitionArea.setText("");
+	public StructurePanel getStructurePanel() {
+		if (doLeftSelection()) {
+			return leftStructure;
 		} else {
-			TermStructure struct = selectorPanel.getSelected().getStruct();
-			termField.setText(struct.getTerm(language));
-			acronymField.setText(struct.getAcronym(language));
-			definitionArea.setText(struct.getDefinition(language));
+			return rightStructure;
 		}
-		
 	}
-
+	
+	public boolean doLeftSelection() {
+		return selectedStructurePanel.equals(leftRadio.getActionCommand());
+	}
+	
 }

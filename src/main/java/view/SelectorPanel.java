@@ -22,7 +22,8 @@ public class SelectorPanel extends JScrollPane {
 	
 	private JPanel mainPanel;
 	private ArrayList<StructureButton> selectionButtons = new ArrayList<StructureButton>();
-	private StructureButton selected = null;
+	private StructureButton leftSelected = null;
+	private StructureButton rightSelected = null;
 	
 	private Color defaultColor;
 	
@@ -65,27 +66,55 @@ public class SelectorPanel extends JScrollPane {
 	}
 	
 	public void removeSelected() {
-		removeButton(selected);
+		if (root.doLeftSelection()) {
+			removeButton(leftSelected);
+		} else {
+			removeButton(rightSelected);
+		}
 		selectButton(null);
 	}
 	
 	public void selectButton(StructureButton button) {
-		if (selected != button) {
-			if (selected == null) {
+		if (root.doLeftSelection()) {
+			selectLeftButton(button);
+		} else {
+			selectRightButton(button);
+		}
+		root.onIdSelect();
+	}
+	public void selectLeftButton(StructureButton button) {
+		if (leftSelected != button) {
+			if (leftSelected == null) {
 				disableButton(button);
-				selected = button;
+				leftSelected = button;
 				setPosition();
 			} else if (button == null) {
-				enableButton(selected);
-				selected = null;
-			} else if (!button.equals(selected)) {
-				enableButton(selected);
+				enableButton(leftSelected);
+				leftSelected = null;
+			} else if (!button.equals(leftSelected)) {
+				enableButton(leftSelected);
 				disableButton(button);
-				selected = button;
+				leftSelected = button;
 				setPosition();
 			}
 		}
-		root.onIdSelect();
+	}
+	public void selectRightButton(StructureButton button) {
+		if (rightSelected != button) {
+			if (rightSelected == null) {
+				disableButton(button);
+				rightSelected = button;
+				setPosition();
+			} else if (button == null) {
+				enableButton(rightSelected);
+				rightSelected = null;
+			} else if (!button.equals(rightSelected)) {
+				enableButton(rightSelected);
+				disableButton(button);
+				rightSelected = button;
+				setPosition();
+			}
+		}
 	}
 	private void enableButton(StructureButton button) {
 		button.setEnabled(true);
@@ -93,11 +122,33 @@ public class SelectorPanel extends JScrollPane {
 	}
 	private void disableButton(StructureButton button) {
 		button.setEnabled(false);
-		button.setBackground(Color.YELLOW);
+		if (root.doLeftSelection()) {
+			button.setBackground(Color.YELLOW);
+		} else {
+			button.setBackground(Color.BLUE);
+		}
 	}
 	
 	public StructureButton getSelected() {
-		return selected;
+		if (root.doLeftSelection()) {
+			return leftSelected;
+		} else {
+			return rightSelected;
+		}
+	}
+	public StructureButton getOtherSelected() {
+		if (root.doLeftSelection()) {
+			return rightSelected;
+		} else {
+			return leftSelected;
+		}
+	}
+	
+	public TermStructure getSelectedStructure() {
+		if (getSelected() == null) {
+			return null;
+		}
+		return getSelected().getStruct();
 	}
 	
 	public int getCount() {
@@ -113,9 +164,20 @@ public class SelectorPanel extends JScrollPane {
 	}
 	
 	public void setPosition() {
-		if (!selected.getBounds().intersects(mainPanel.getVisibleRect()) && selectionButtons.size() > 3) {
-			getVerticalScrollBar().setValue(getVerticalScrollBar().getMaximum() *
-					selectionButtons.indexOf(selected) / (selectionButtons.size() - 1));
+		if (getSelected() == null) {
+			if (getOtherSelected() == null) {
+				getVerticalScrollBar().setValue(0);
+			} else {
+				if (!getOtherSelected().getBounds().intersects(mainPanel.getVisibleRect()) && selectionButtons.size() > 3) {
+					getVerticalScrollBar().setValue(getVerticalScrollBar().getMaximum() *
+							selectionButtons.indexOf(leftSelected) / (selectionButtons.size() - 1));
+				}
+			}
+		} else {
+			if (!getSelected().getBounds().intersects(mainPanel.getVisibleRect()) && selectionButtons.size() > 3) {
+				getVerticalScrollBar().setValue(getVerticalScrollBar().getMaximum() *
+						selectionButtons.indexOf(leftSelected) / (selectionButtons.size() - 1));
+			}
 		}
 	}
 

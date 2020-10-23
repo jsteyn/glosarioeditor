@@ -87,7 +87,6 @@ public class ReferencePanel extends JScrollPane {
 		ArrayList<Integer> removals = new ArrayList<Integer>();
 		for (int i = 0; i < referenceFields.size(); i++) {
 			if (i == referenceFields.size() - 1) {
-				System.out.println("TEXT " + referenceFields.get(i).getText());
 				if (!referenceFields.get(i).getText().equals("")) {
 					addField();
 				}
