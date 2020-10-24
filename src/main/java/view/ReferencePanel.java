@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -70,10 +68,6 @@ public class ReferencePanel extends JScrollPane {
 		});
 		mainPanel.add(newField, newCon);
 		referenceFields.add(newField);
-	}
-	private void removeField(int index) {
-		mainPanel.remove(referenceFields.get(index));
-		referenceFields.remove(index);
 	}
 	public void clearFields() {
 		for (JTextField f: referenceFields) {

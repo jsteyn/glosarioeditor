@@ -22,6 +22,8 @@ import model.TermStructure;
 
 public class StructurePanel extends JPanel {
 	
+	private static final long serialVersionUID = 5L;
+	
 	private Root root;
 
 	public JLabel idFieldLabel = new JLabel("ID:");
@@ -33,6 +35,8 @@ public class StructurePanel extends JPanel {
 	public JTextField acronymField = new JTextField();
 	public JLabel definitionAreaLabel = new JLabel("Definition:");
 	public JTextPane definitionArea = new JTextPane();
+	
+	public boolean readOnly = false;
 	
 	public StructurePanel(final Root root) {
 		super();
@@ -203,6 +207,10 @@ public class StructurePanel extends JPanel {
 		
 	}
 	
+	public void setReadOnly() {
+		readOnly = true;
+	}
+	
 	public void setUnselected() {
 		idField.setEnabled(false);
 		languageSelect.setEnabled(false);
@@ -219,9 +227,9 @@ public class StructurePanel extends JPanel {
 			acronymField.setEnabled(false);
 			definitionArea.setEnabled(false);
 		} else {
-			termField.setEnabled(true);
-			acronymField.setEnabled(true);
-			definitionArea.setEnabled(true);
+			termField.setEnabled(!readOnly);
+			acronymField.setEnabled(!readOnly);
+			definitionArea.setEnabled(!readOnly);
 		}
 	}
 	
@@ -237,12 +245,18 @@ public class StructurePanel extends JPanel {
 			for (String lan: struct.getLanguages()) {
 				languageSelect.addItem(lan);
 			}
+			if (struct.getLanguages().contains("en")) {
+				root.lockDocumentListeners = true;
+				languageSelect.setSelectedItem("en");
+				root.lockDocumentListeners = false;
+			}
 		}
 		setLanguage(struct);
 	}
 	
 	public void setLanguage(TermStructure struct) {
 		String language = (String)languageSelect.getSelectedItem();
+		root.lockDocumentListeners = true;
 		if (language.equals("None")) {
 			termField.setText("");
 			acronymField.setText("");
@@ -252,7 +266,7 @@ public class StructurePanel extends JPanel {
 			acronymField.setText(struct.getAcronym(language));
 			definitionArea.setText(struct.getDefinition(language));
 		}
-		
+		root.lockDocumentListeners = false;
 	}
 
 }

@@ -27,11 +27,8 @@ public class MainFrame extends JFrame {
 	public SelectorPanel selectorPanel;
 	public JLabel referencePanelLabel = new JLabel("References:");
 	public ReferencePanel referencePanel;
-	public StructurePanel leftStructure;
-	public StructurePanel rightStructure;
-	public JRadioButton leftRadio = new JRadioButton("LEFT");
-	public JRadioButton rightRadio = new JRadioButton("RIGHT");
-	public ButtonGroup structureButtonGroup = new ButtonGroup();
+	public StructurePanel structurePanel;
+	public StructurePanel readOnlyPanel;
 	public String selectedStructurePanel;
 	public JButton addButton = new JButton("Add New");
 	public JButton subButton = new JButton("Delete");
@@ -88,58 +85,27 @@ public class MainFrame extends JFrame {
 		});
 		
 		
-		GridBagConstraints leftRadioCon = new GridBagConstraints();
-		leftRadioCon.gridx = 2;
-		leftRadioCon.gridy = 0;
-		leftRadioCon.weightx = 0;
-		leftRadioCon.weighty = 0;
-		add(leftRadio, leftRadioCon);
-		leftRadio.setActionCommand("LEFT");
-		leftRadio.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				root.setStructureSelection();
-			}
-		});
-		leftRadio.setSelected(true);
-
-		GridBagConstraints rightRadioCon = new GridBagConstraints();
-		rightRadioCon.gridx = 3;
-		rightRadioCon.gridy = 0;
-		rightRadioCon.weightx = 0;
-		rightRadioCon.weighty = 0;
-		add(rightRadio, rightRadioCon);
-		rightRadio.setActionCommand("RIGHT");
-		rightRadio.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				root.setStructureSelection();
-			}
-		});
+		structurePanel = new StructurePanel(root);
+		GridBagConstraints structurePanelCon = new GridBagConstraints();
+		structurePanelCon.gridx = 2;
+		structurePanelCon.gridy = 1;
+		structurePanelCon.fill = GridBagConstraints.BOTH;
+		structurePanelCon.weightx = 1;
+		structurePanelCon.weighty = 1;
+		add(structurePanel, structurePanelCon);
+		structurePanel.setBackground(new Color(210, 220, 230));
 		
-		structureButtonGroup.add(leftRadio);
-		structureButtonGroup.add(rightRadio);
-
+		readOnlyPanel = new StructurePanel(root);
+		GridBagConstraints readOnlyPanelCon = new GridBagConstraints();
+		readOnlyPanelCon.gridx = 3;
+		readOnlyPanelCon.gridy = 1;
+		readOnlyPanelCon.fill = GridBagConstraints.BOTH;
+		readOnlyPanelCon.weightx = 1;
+		readOnlyPanelCon.weighty = 1;
+		add(readOnlyPanel, readOnlyPanelCon);
+		readOnlyPanel.setReadOnly();
+		readOnlyPanel.setBackground(new Color(255, 255, 200));
 		
-		leftStructure = new StructurePanel(root);
-		GridBagConstraints leftStructureCon = new GridBagConstraints();
-		leftStructureCon.gridx = 2;
-		leftStructureCon.gridy = 1;
-		leftStructureCon.fill = GridBagConstraints.BOTH;
-		leftStructureCon.weightx = 1;
-		leftStructureCon.weighty = 1;
-		add(leftStructure, leftStructureCon);
-		leftStructure.setBackground(new Color(255, 255, 180));
-		
-		rightStructure = new StructurePanel(root);
-		GridBagConstraints rightStructureCon = new GridBagConstraints();
-		rightStructureCon.gridx = 3;
-		rightStructureCon.gridy = 1;
-		rightStructureCon.fill = GridBagConstraints.BOTH;
-		rightStructureCon.weightx = 1;
-		rightStructureCon.weighty = 1;
-		add(rightStructure, rightStructureCon);
-		rightStructure.setBackground(new Color(180, 200, 255));
-		
-
 		GridBagConstraints referencePanelLabelCon = new GridBagConstraints();
 		referencePanelLabelCon.gridx = 4;
 		referencePanelLabelCon.gridy = 0;
@@ -193,7 +159,6 @@ public class MainFrame extends JFrame {
 			}
 		});
 		
-		setStructureSelection();
 		checkEnabled();
 		
 		setPreferredSize(new Dimension(1200, 600));
@@ -224,34 +189,20 @@ public class MainFrame extends JFrame {
 	
 	public void setUnselected() {
 		referencePanel.setEnabled(false);
-		leftStructure.setUnselected();
-		rightStructure.setUnselected();
+		structurePanel.setUnselected();
+		readOnlyPanel.setUnselected();
 	}
 	
 	public void setSelected() {
 		referencePanel.setEnabled(true);
-		if (doLeftSelection()) {
-			leftStructure.setSelected();
-			rightStructure.setUnselected();
-		} else {
-			leftStructure.setUnselected();
-			rightStructure.setSelected();
-		}
-	}
-	
-	public void setStructureSelection() {
-		if (structureButtonGroup.getSelection().getActionCommand().equals(leftRadio.getActionCommand())) {
-			selectedStructurePanel = leftRadio.getActionCommand();
-		} else {
-			selectedStructurePanel = rightRadio.getActionCommand();
-		}
-		checkEnabled();
-		updateReferences(selectorPanel.getSelectedStructure());
+		structurePanel.setSelected();
+		readOnlyPanel.setSelected();
 	}
 	
 	public void setSelection() {
 		TermStructure struct = selectorPanel.getSelectedStructure();
-		getStructurePanel().setSelection(struct);
+		structurePanel.setSelection(struct);
+		readOnlyPanel.setSelection(struct);
 		updateReferences(struct);
 	}
 	
@@ -267,18 +218,6 @@ public class MainFrame extends JFrame {
 		}
 		root.lockDocumentListeners = false;
 		repaint();
-	}
-	
-	public StructurePanel getStructurePanel() {
-		if (doLeftSelection()) {
-			return leftStructure;
-		} else {
-			return rightStructure;
-		}
-	}
-	
-	public boolean doLeftSelection() {
-		return selectedStructurePanel.equals(leftRadio.getActionCommand());
 	}
 	
 }

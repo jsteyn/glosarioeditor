@@ -1,6 +1,5 @@
 package controller;
 
-import java.awt.SplashScreen;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -83,10 +82,6 @@ public class Root {
 		}
 	}
 	
-	public void setStructureSelection() {
-		mainFrame.setStructureSelection();
-	}
-	
 	public void addNewTerm() {
 		mainFrame.selectorPanel.selectButton(mainFrame.selectorPanel.addButton(new TermStructure()));
 	}
@@ -132,10 +127,10 @@ public class Root {
 	}
 	
 	public void addLanguage() {
-		String language = mainFrame.getStructurePanel().languageSelect.inputField.getText();
+		String language = mainFrame.structurePanel.languageSelect.inputField.getText();
 		if (Pattern.compile("^[a-z][a-z]$", Pattern.DOTALL).matcher(language).matches()) {
 			mainFrame.selectorPanel.getSelected().getStruct().addDefinition(language, "");
-			mainFrame.getStructurePanel().languageSelect.addItem(language);
+			mainFrame.structurePanel.languageSelect.addItem(language);
 		}
 	}
 	
@@ -147,39 +142,33 @@ public class Root {
 		if (mainFrame.selectorPanel.getSelected() != null) {
 			lockDocumentListeners = true;
 			mainFrame.selectorPanel.getSelected().getStruct()
-			.setId(mainFrame.getStructurePanel().idField.getText());
-			mainFrame.selectorPanel.getSelected().setText(mainFrame.getStructurePanel().idField.getText());
+			.setId(mainFrame.structurePanel.idField.getText());
+			mainFrame.selectorPanel.getSelected().setText(mainFrame.structurePanel.idField.getText());
 			lockDocumentListeners = false;
 		}
 	}
 	public void onLanguageSelect() {
 		mainFrame.checkEnabled();
-		mainFrame.getStructurePanel().setLanguage(mainFrame.selectorPanel.getSelectedStructure());
+		mainFrame.structurePanel.setLanguage(mainFrame.selectorPanel.getSelectedStructure());
+		mainFrame.readOnlyPanel.setLanguage(mainFrame.selectorPanel.getSelectedStructure());
 	}
 	public void onTermChange() {
 		mainFrame.selectorPanel.getSelected().getStruct()
-		.setTerm((String)mainFrame.getStructurePanel().languageSelect.getSelectedItem(),
-				mainFrame.getStructurePanel().termField.getText());
+		.setTerm((String)mainFrame.structurePanel.languageSelect.getSelectedItem(),
+				mainFrame.structurePanel.termField.getText());
 	}
 	public void onAcronymChange() {
 		mainFrame.selectorPanel.getSelected().getStruct()
-		.setAcronym((String)mainFrame.getStructurePanel().languageSelect.getSelectedItem(),
-				mainFrame.getStructurePanel().acronymField.getText());
+		.setAcronym((String)mainFrame.structurePanel.languageSelect.getSelectedItem(),
+				mainFrame.structurePanel.acronymField.getText());
 	}
 	public void onDefinitionChange() {
 		mainFrame.selectorPanel.getSelected().getStruct()
-		.setDefinition((String)mainFrame.getStructurePanel().languageSelect.getSelectedItem(),
-				mainFrame.getStructurePanel().definitionArea.getText());
+		.setDefinition((String)mainFrame.structurePanel.languageSelect.getSelectedItem(),
+				mainFrame.structurePanel.definitionArea.getText());
 	}
 	public void onReferenceChange() {
 		mainFrame.referencePanel.applyReferences(mainFrame.selectorPanel.getSelected().getStruct());
-	}
-	
-	public boolean doLeftSelection() {
-		if (mainFrame == null) {
-			return true;
-		}
-		return mainFrame.doLeftSelection();
 	}
 
 }

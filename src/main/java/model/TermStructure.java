@@ -57,7 +57,7 @@ public class TermStructure {
 	}
 	
 	public ArrayList<DefinitionStructure> getDefinitions() {
-		return new ArrayList(definitions.values());
+		return new ArrayList<DefinitionStructure>(definitions.values());
 	}
 	
 	public ArrayList<String> getLanguages() {

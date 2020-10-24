@@ -22,8 +22,7 @@ public class SelectorPanel extends JScrollPane {
 	
 	private JPanel mainPanel;
 	private ArrayList<StructureButton> selectionButtons = new ArrayList<StructureButton>();
-	private StructureButton leftSelected = null;
-	private StructureButton rightSelected = null;
+	private StructureButton selectedStructure = null;
 	
 	private Color defaultColor;
 	
@@ -66,55 +65,27 @@ public class SelectorPanel extends JScrollPane {
 	}
 	
 	public void removeSelected() {
-		if (root.doLeftSelection()) {
-			removeButton(leftSelected);
-		} else {
-			removeButton(rightSelected);
-		}
+		removeButton(selectedStructure);
 		selectButton(null);
 	}
 	
 	public void selectButton(StructureButton button) {
-		if (root.doLeftSelection()) {
-			selectLeftButton(button);
-		} else {
-			selectRightButton(button);
+		if (selectedStructure != button) {
+			if (selectedStructure == null) {
+				disableButton(button);
+				selectedStructure = button;
+				setPosition();
+			} else if (button == null) {
+				enableButton(selectedStructure);
+				selectedStructure = null;
+			} else if (!button.equals(selectedStructure)) {
+				enableButton(selectedStructure);
+				disableButton(button);
+				selectedStructure = button;
+				setPosition();
+			}
 		}
 		root.onIdSelect();
-	}
-	public void selectLeftButton(StructureButton button) {
-		if (leftSelected != button) {
-			if (leftSelected == null) {
-				disableButton(button);
-				leftSelected = button;
-				setPosition();
-			} else if (button == null) {
-				enableButton(leftSelected);
-				leftSelected = null;
-			} else if (!button.equals(leftSelected)) {
-				enableButton(leftSelected);
-				disableButton(button);
-				leftSelected = button;
-				setPosition();
-			}
-		}
-	}
-	public void selectRightButton(StructureButton button) {
-		if (rightSelected != button) {
-			if (rightSelected == null) {
-				disableButton(button);
-				rightSelected = button;
-				setPosition();
-			} else if (button == null) {
-				enableButton(rightSelected);
-				rightSelected = null;
-			} else if (!button.equals(rightSelected)) {
-				enableButton(rightSelected);
-				disableButton(button);
-				rightSelected = button;
-				setPosition();
-			}
-		}
 	}
 	private void enableButton(StructureButton button) {
 		button.setEnabled(true);
@@ -122,26 +93,11 @@ public class SelectorPanel extends JScrollPane {
 	}
 	private void disableButton(StructureButton button) {
 		button.setEnabled(false);
-		if (root.doLeftSelection()) {
-			button.setBackground(Color.YELLOW);
-		} else {
-			button.setBackground(Color.BLUE);
-		}
+		button.setBackground(Color.YELLOW);
 	}
 	
 	public StructureButton getSelected() {
-		if (root.doLeftSelection()) {
-			return leftSelected;
-		} else {
-			return rightSelected;
-		}
-	}
-	public StructureButton getOtherSelected() {
-		if (root.doLeftSelection()) {
-			return rightSelected;
-		} else {
-			return leftSelected;
-		}
+		return selectedStructure;
 	}
 	
 	public TermStructure getSelectedStructure() {
@@ -164,20 +120,11 @@ public class SelectorPanel extends JScrollPane {
 	}
 	
 	public void setPosition() {
-		if (getSelected() == null) {
-			if (getOtherSelected() == null) {
-				getVerticalScrollBar().setValue(0);
-			} else {
-				if (!getOtherSelected().getBounds().intersects(mainPanel.getVisibleRect()) && selectionButtons.size() > 3) {
-					getVerticalScrollBar().setValue(getVerticalScrollBar().getMaximum() *
-							selectionButtons.indexOf(leftSelected) / (selectionButtons.size() - 1));
-				}
-			}
-		} else {
-			if (!getSelected().getBounds().intersects(mainPanel.getVisibleRect()) && selectionButtons.size() > 3) {
-				getVerticalScrollBar().setValue(getVerticalScrollBar().getMaximum() *
-						selectionButtons.indexOf(leftSelected) / (selectionButtons.size() - 1));
-			}
+		if (selectedStructure == null) {
+			getVerticalScrollBar().setValue(0);
+		} else if (!selectedStructure.getBounds().intersects(mainPanel.getVisibleRect()) && selectionButtons.size() > 3) {
+			getVerticalScrollBar().setValue(getVerticalScrollBar().getMaximum() *
+					selectionButtons.indexOf(selectedStructure) / (selectionButtons.size() - 1));
 		}
 	}
 
