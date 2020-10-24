@@ -1,3 +1,4 @@
+.factorypath
 .project
 .settings
 .classpath
@@ -5,3 +6,5 @@ target/
 /bin/
 system.properties
 sampleGlossary.yml
+.vscode
+

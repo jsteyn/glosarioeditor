@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -166,7 +165,7 @@ public class YmlParser {
 			data += parseStructure(struct) + "\n\n";
 		}
 		if (!data.equals("")) {
-			data = data.trim();
+			data = data.trim() + "\n";
 		}
 		try {
 			file.createNewFile();
@@ -179,6 +178,9 @@ public class YmlParser {
 	}
 	
 	private static String parseStructure(TermStructure struct) {
+		if (struct.getLanguages().size() == 0) {
+			return "";
+		}
 		String dataSection = "- slug: " + struct.getId();
 		ArrayList<String> refs = struct.getRefs();
 		if (refs.size() != 0) {
@@ -188,14 +190,20 @@ public class YmlParser {
 			}
 		}
 		for (DefinitionStructure def: struct.getDefinitions()) {
-			if (!(def.term.equals("") || def.definition.equals(""))) {
-				dataSection += "\n  " + def.language + ":";
+			dataSection += "\n  " + def.language + ":";
+			if (def.term.equals("")) {
+				dataSection += "\n    term: \"<MISSING TERM>\"";
+			} else {
 				dataSection += "\n    term: \"" + def.term + "\"";
-				if (!def.acronym.equals("")) {
-					dataSection += "\n    acronym: " + def.acronym;
-				}
-				dataSection += "\n    def: >";
-				String definition = def.definition.trim().replaceAll("\n", "").replaceAll(" +", " ");
+			}
+			if (!def.acronym.equals("")) {
+				dataSection += "\n    acronym: " + def.acronym;
+			}
+			dataSection += "\n    def: >";
+			String definition = def.definition.trim().replaceAll("\n", "").replaceAll(" +", " ");
+			if (definition.equals("")) {
+				dataSection += "\n      <MISSING DEFINITION>";
+			} else {
 				int startIndex = 0;
 				int endIndex = 0;
 				int nextIndex;
