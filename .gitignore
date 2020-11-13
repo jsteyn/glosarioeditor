@@ -7,4 +7,4 @@ target/
 system.properties
 sampleGlossary.yml
 .vscode
-
+.idea

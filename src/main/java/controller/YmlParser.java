@@ -34,10 +34,8 @@ public class YmlParser {
 		try {
 			ArrayList<TermStructure> struct = readFile(args[0]);
 			logger.trace(args[0] + " has been validated");
-		} catch (InvalidYmlSyntaxException e) {
-
-		} catch (FileNotFoundException e) {
-
+		} catch (Exception e) {
+			logger.error("Exception: " + e.getMessage());
 		}
 	}
 	
@@ -144,8 +142,7 @@ public class YmlParser {
 						languageSection.indexOf('\n', languageSection.indexOf("    acronym: ")));
 			}
 			
-			System.out.println(definition + " " + definition.replaceAll(" +", " "));
-			struct.addDefinition(language, definition.replaceAll(" +", " "));
+			struct.addDefinition(language, definition.replaceAll("\n {6}", "\n"));
 			struct.setTerm(language, term);
 			struct.setAcronym(language, acronym);
 			
@@ -201,7 +198,7 @@ public class YmlParser {
 				dataSection += "\n    acronym: " + def.acronym;
 			}
 			dataSection += "\n    def: >";
-			String definition = def.definition.trim().replaceAll("\n", "").replaceAll(" +", " ");
+			String definition = def.definition.trim();
 			if (definition.equals("")) {
 				dataSection += "\n      <MISSING DEFINITION>";
 			} else {

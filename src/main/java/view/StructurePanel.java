@@ -1,17 +1,12 @@
 package view;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.SimpleAttributeSet;
@@ -34,6 +29,8 @@ public class StructurePanel extends JPanel {
 	public JLabel acronymFieldLabel = new JLabel("Acronym");
 	public JTextField acronymField = new JTextField();
 	public JLabel definitionAreaLabel = new JLabel("Definition:");
+	public JScrollPane definitionAreaScrollPane;
+	public JPanel definitionAreaPanel = new JPanel();
 	public JTextPane definitionArea = new JTextPane();
 	
 	public boolean readOnly = false;
@@ -172,20 +169,25 @@ public class StructurePanel extends JPanel {
 		definitionAreaLabelCon.weighty = 0;
 		definitionAreaLabelCon.insets = new Insets(10, 20, 0, 0);
 		add(definitionAreaLabel, definitionAreaLabelCon);
-		
-		GridBagConstraints definitionAreaCon = new GridBagConstraints();
-		definitionAreaCon.gridx = 2;
-		definitionAreaCon.gridy = 3;
-		definitionAreaCon.gridwidth = 4;
-		definitionAreaCon.fill = GridBagConstraints.BOTH;
-		definitionAreaCon.weightx = 1;
-		definitionAreaCon.weighty = 9;
-		definitionAreaCon.insets = new Insets(0, 20, 20, 20);
-		add(definitionArea, definitionAreaCon);
+
+		definitionAreaScrollPane = new JScrollPane(definitionAreaPanel,
+				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		GridBagConstraints definitionAreaScrollPaneCon = new GridBagConstraints();
+		definitionAreaScrollPaneCon.gridx = 2;
+		definitionAreaScrollPaneCon.gridy = 3;
+		definitionAreaScrollPaneCon.gridwidth = 4;
+		definitionAreaScrollPaneCon.fill = GridBagConstraints.BOTH;
+		definitionAreaScrollPaneCon.weightx = 1;
+		definitionAreaScrollPaneCon.weighty = 9;
+		definitionAreaScrollPaneCon.insets = new Insets(0, 20, 20, 20);
+		add(definitionAreaScrollPane, definitionAreaScrollPaneCon);
+		definitionAreaPanel.setLayout(new BorderLayout());
+		definitionAreaPanel.add(definitionArea);
+
 		definitionArea.setEnabled(false);
-		SimpleAttributeSet attribs = new SimpleAttributeSet();
-		// StyleConstants.setAlignment(attribs, StyleConstants.ALIGN_JUSTIFIED);
-		// definitionArea.setParagraphAttributes(attribs, true);
+//		SimpleAttributeSet attribs = new SimpleAttributeSet();
+//		StyleConstants.setAlignment(attribs, StyleConstants.ALIGN_JUSTIFIED);
+//		definitionArea.setParagraphAttributes(attribs, true);
 		definitionArea.getDocument().addDocumentListener(new DocumentListener() {
 			public void removeUpdate(DocumentEvent e) {
 				update(e);
