@@ -91,7 +91,7 @@ public class YmlParser {
 		counter = -1;
 		return data;
 	}
-	
+
 	private static TermStructure parseYml(String ymlCode) throws InvalidYmlSyntaxException {
 		TermStructure struct = new TermStructure();
 		struct.setId(ymlCode.substring(8, ymlCode.indexOf('\n')));
@@ -104,7 +104,8 @@ public class YmlParser {
 		}
 		
 		if (!languageCheck.matcher(ymlCode).find()) {
-			throw new InvalidYmlSyntaxException(counter, ymlCode, InvalidYmlSyntaxException.MISSING_LANGUAGE);
+			return struct;
+//			throw new InvalidYmlSyntaxException(counter, ymlCode, InvalidYmlSyntaxException.MISSING_LANGUAGE);
 		}
 		
 		Matcher languageMatcher = languagePattern.matcher(ymlCode);
@@ -176,10 +177,10 @@ public class YmlParser {
 	}
 	
 	private static String parseStructure(TermStructure struct) {
-		if (struct.getLanguages().size() == 0) {
-			return "";
-		}
 		String dataSection = "- slug: " + struct.getId();
+		if (struct.getLanguages().size() == 0) {
+			return dataSection + "\n";
+		}
 		ArrayList<String> refs = struct.getRefs();
 		if (refs.size() != 0) {
 			dataSection += "\n  ref:";
