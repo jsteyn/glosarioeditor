@@ -184,8 +184,8 @@ public class StructurePanel extends JPanel {
 		add(definitionArea, definitionAreaCon);
 		definitionArea.setEnabled(false);
 		SimpleAttributeSet attribs = new SimpleAttributeSet();
-		StyleConstants.setAlignment(attribs, StyleConstants.ALIGN_JUSTIFIED);
-		definitionArea.setParagraphAttributes(attribs, true);
+		// StyleConstants.setAlignment(attribs, StyleConstants.ALIGN_JUSTIFIED);
+		// definitionArea.setParagraphAttributes(attribs, true);
 		definitionArea.getDocument().addDocumentListener(new DocumentListener() {
 			public void removeUpdate(DocumentEvent e) {
 				update(e);
