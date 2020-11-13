@@ -137,14 +137,15 @@ public class YmlParser {
 			String language = languageSection.substring(2, 4);
 			String term = languageSection.substring(quoteStart + 1, languageSection.indexOf('"', quoteStart + 1));
 			String definition = languageSection.substring(languageSection.indexOf("def: >") + 6).trim()
-					.replaceAll("\n", "").replaceAll(" +", " ");
+					.replaceAll(" +", " ");
 			String acronym = "";
 			if (languageSection.contains("    acronym: ")) {
 				acronym = languageSection.substring(languageSection.indexOf("    acronym: ") + 13,
 						languageSection.indexOf('\n', languageSection.indexOf("    acronym: ")));
 			}
 			
-			struct.addDefinition(language, definition);
+			System.out.println(definition + " " + definition.replaceAll(" +", " "));
+			struct.addDefinition(language, definition.replaceAll(" +", " "));
 			struct.setTerm(language, term);
 			struct.setAcronym(language, acronym);
 			
@@ -204,21 +205,23 @@ public class YmlParser {
 			if (definition.equals("")) {
 				dataSection += "\n      <MISSING DEFINITION>";
 			} else {
-				int startIndex = 0;
-				int endIndex = 0;
-				int nextIndex;
-				while ((nextIndex = definition.indexOf(" ", endIndex + 1)) != -1) {
-					if (nextIndex - startIndex > 80) {
-						dataSection += "\n      " + definition.substring(startIndex, endIndex);
-						startIndex = endIndex + 1;
-					} else {
-						endIndex = nextIndex;
-					}
-				}
-				if (startIndex < endIndex) {
-					dataSection += "\n      " + definition.substring(startIndex);
-				}
+				dataSection += "\n      " + definition.replaceAll("\n", "      \n");
 			}
+			// 	int startIndex = 0;
+			// 	int endIndex = 0;
+			// 	int nextIndex;
+			// 	while ((nextIndex = definition.indexOf(" ", endIndex + 1)) != -1) {
+			// 		if (nextIndex - startIndex > 80) {
+			// 			dataSection += "\n      " + definition.substring(startIndex, endIndex);
+			// 			startIndex = endIndex + 1;
+			// 		} else {
+			// 			endIndex = nextIndex;
+			// 		}
+			// 	}
+			// 	if (startIndex < endIndex) {
+			// 		dataSection += "\n      " + definition.substring(startIndex);
+			// 	}
+			// }
 		}
 		return dataSection + "\n";
 	}
