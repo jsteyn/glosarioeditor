@@ -202,7 +202,7 @@ public class YmlParser {
 			if (definition.equals("")) {
 				dataSection += "\n      <MISSING DEFINITION>";
 			} else {
-				dataSection += "\n      " + definition.replaceAll("\n", "      \n");
+				dataSection += "\n      " + definition.replaceAll("\n", "\n      ");
 			}
 			// 	int startIndex = 0;
 			// 	int endIndex = 0;
